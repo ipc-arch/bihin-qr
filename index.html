@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>備品管理QRコード導入のご提案</title>
+<link rel="icon" type="image/png" href="owl.png">
 <style>
   :root {
     --main: #2b6cb0;
@@ -14,6 +15,7 @@
     --muted: #718096;
     --border: #e2e8f0;
     --ok: #48bb78;
+    --owl: #c8956d;
   }
   * { box-sizing: border-box; }
   body {
@@ -25,12 +27,36 @@
     padding: 20px;
   }
   .wrap { max-width: 820px; margin: 0 auto; }
-  h1 {
-    color: var(--main);
-    border-bottom: 4px solid var(--main);
-    padding-bottom: 12px;
-    font-size: 1.8em;
+
+  /* Header */
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: linear-gradient(135deg, #fff8ef 0%, #ffffff 100%);
+    padding: 24px;
+    border-radius: 16px;
+    border: 2px solid #f4e4cd;
+    margin-bottom: 24px;
   }
+  .header img {
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+  }
+  .header .title h1 {
+    margin: 0 0 8px 0;
+    color: var(--main);
+    font-size: 1.6em;
+    border: none;
+    padding: 0;
+  }
+  .header .title p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.95em;
+  }
+
   h2 {
     color: var(--main);
     background: #ebf4ff;
@@ -40,6 +66,7 @@
     font-size: 1.3em;
   }
   h3 { color: var(--accent); margin-top: 24px; }
+
   .card {
     background: var(--card);
     border: 1px solid var(--border);
@@ -108,61 +135,208 @@
     margin-bottom: 6px;
   }
   .step .label { font-size: 0.95em; font-weight: 600; }
+
   table {
     width: 100%;
     border-collapse: collapse;
     margin: 12px 0;
     background: white;
   }
-  th, td {
-    border: 1px solid var(--border);
-    padding: 10px 12px;
-    text-align: left;
-  }
+  th, td { border: 1px solid var(--border); padding: 10px 12px; text-align: left; }
   th { background: #edf2f7; }
   .yes { color: var(--ok); font-weight: bold; }
-  .note {
-    background: #fffbeb;
-    border: 1px solid #f6e05e;
-    padding: 10px 14px;
-    border-radius: 6px;
-    font-size: 0.95em;
-    margin: 10px 0;
-  }
+
   ul.clean { list-style: none; padding-left: 0; }
-  ul.clean li {
-    padding: 6px 0 6px 28px;
-    position: relative;
-  }
+  ul.clean li { padding: 6px 0 6px 28px; position: relative; }
   ul.clean li::before {
     content: "✓";
-    position: absolute;
-    left: 0;
-    color: var(--ok);
-    font-weight: bold;
-    font-size: 1.2em;
+    position: absolute; left: 0;
+    color: var(--ok); font-weight: bold; font-size: 1.2em;
   }
   .tag {
     display: inline-block;
-    background: var(--main);
-    color: white;
-    padding: 2px 10px;
-    border-radius: 12px;
-    font-size: 0.85em;
-    margin-right: 6px;
+    background: var(--main); color: white;
+    padding: 2px 10px; border-radius: 12px;
+    font-size: 0.85em; margin-right: 6px;
   }
+
   .highlight-box {
     background: linear-gradient(135deg, #fff5f5 0%, #f0fff4 100%);
     border: 3px solid var(--accent);
     border-radius: 12px;
     padding: 20px 24px;
     margin: 24px 0;
+    position: relative;
   }
-  .highlight-box h3 {
-    margin-top: 0;
-    color: var(--accent);
-    font-size: 1.2em;
+  .highlight-box h3 { margin-top: 0; color: var(--accent); font-size: 1.2em; }
+  .highlight-box .big {
+    font-size: 1.15em;
+    font-weight: 700;
+    color: var(--text);
+    background: #fff;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border-left: 5px solid var(--accent);
+    margin: 12px 0;
   }
+
+  /* ========== Interactive App Mockup ========== */
+  .mockup-section {
+    background: linear-gradient(135deg, #e6f0fa 0%, #f0fff4 100%);
+    border-radius: 16px;
+    padding: 30px 20px;
+    margin: 24px 0;
+    text-align: center;
+  }
+  .mockup-hint {
+    color: var(--muted);
+    font-size: 0.9em;
+    margin-bottom: 16px;
+  }
+  .phone-frame {
+    display: inline-block;
+    width: 300px;
+    background: #1a202c;
+    border-radius: 36px;
+    padding: 14px 10px 18px 10px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    position: relative;
+  }
+  .phone-frame::before {
+    content: "";
+    position: absolute;
+    top: 8px; left: 50%;
+    transform: translateX(-50%);
+    width: 60px; height: 6px;
+    background: #2d3748;
+    border-radius: 3px;
+  }
+  .phone-screen {
+    background: #f7fafc;
+    border-radius: 24px;
+    overflow: hidden;
+    min-height: 480px;
+    position: relative;
+    text-align: left;
+  }
+  .app-header {
+    background: var(--main);
+    color: white;
+    padding: 18px 16px 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .app-header img { width: 36px; height: 36px; }
+  .app-header .name { font-weight: bold; font-size: 1em; }
+  .app-header .sub { font-size: 0.75em; opacity: 0.85; }
+  .screen { display: none; padding: 16px; animation: fadeIn 0.3s; }
+  .screen.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .scan-btn {
+    background: var(--main);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 20px;
+    width: 100%;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(43,108,176,0.3);
+  }
+  .scan-btn:hover { background: #2c5282; }
+  .qr-icon {
+    font-size: 2.5em;
+    display: block;
+    margin-bottom: 6px;
+  }
+  .list-item {
+    background: white;
+    border-radius: 10px;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid var(--border);
+    cursor: pointer;
+  }
+  .list-item:hover { background: #ebf4ff; }
+  .list-item .title { font-weight: bold; font-size: 0.9em; }
+  .list-item .meta { font-size: 0.75em; color: var(--muted); margin-top: 4px; }
+  .list-item .status-ok { color: var(--ok); font-size: 0.75em; font-weight: bold; }
+  .list-item .status-wait { color: var(--accent); font-size: 0.75em; font-weight: bold; }
+
+  .detail-photo {
+    background: #edf2f7;
+    border-radius: 10px;
+    height: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3em;
+    margin-bottom: 12px;
+  }
+  .detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.85em;
+  }
+  .detail-row .k { color: var(--muted); }
+  .detail-row .v { font-weight: 600; }
+  .confirm-btn {
+    background: var(--ok);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 16px;
+    width: 100%;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 16px;
+    box-shadow: 0 4px 10px rgba(72,187,120,0.3);
+  }
+  .confirm-btn:hover { background: #38a169; }
+
+  .done-screen { text-align: center; padding: 40px 16px; }
+  .done-check {
+    width: 80px; height: 80px;
+    background: var(--ok);
+    border-radius: 50%;
+    margin: 0 auto 16px;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 3em;
+    animation: pop 0.4s;
+  }
+  @keyframes pop {
+    0% { transform: scale(0); }
+    70% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+  }
+  .done-screen h3 { color: var(--ok); margin: 8px 0; }
+  .done-screen p { color: var(--muted); font-size: 0.85em; }
+
+  .back-btn {
+    background: transparent;
+    border: none;
+    color: var(--main);
+    cursor: pointer;
+    font-size: 0.85em;
+    padding: 4px 0;
+    margin-bottom: 8px;
+  }
+
+  .ipad-note {
+    background: #e6f0fa;
+    border-left: 4px solid var(--main);
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-top: 12px;
+    font-size: 0.9em;
+  }
+
   footer {
     margin-top: 50px;
     padding-top: 20px;
@@ -171,17 +345,24 @@
     font-size: 0.9em;
     text-align: center;
   }
+  .footer-owl { width: 50px; vertical-align: middle; margin-right: 8px; }
 </style>
 </head>
 <body>
 <div class="wrap">
 
-<h1>📦 備品管理へのQRコード導入について</h1>
+<div class="header">
+  <img src="owl.png" alt="備品管理フクロウ">
+  <div class="title">
+    <h1>📦 備品管理へのQRコード導入について</h1>
+    <p>既存シールはそのまま。スマホ/iPadでピッと読み取って楽々管理</p>
+  </div>
+</div>
 
 <div class="lead">
   <strong>現在の管理シールはそのまま残します。</strong><br>
   QRコードは<strong>「追加で貼るだけ」</strong>。目視での確認・既存の運用は今まで通り。<br>
-  スマホで「ピッ」と読み取れば、棚卸しや備品情報の確認が一瞬で終わります。
+  スマホやiPadで「ピッ」と読み取れば、棚卸しや備品情報の確認が一瞬で終わります。
 </div>
 
 <h2>1. 今起きている困りごと</h2>
@@ -196,54 +377,112 @@
 
 <h2>2. QRコードで何が変わるか</h2>
 
-<img src="after.png" alt="スマホでQRを読み取って棚卸し完了" class="hero-img">
-<div class="img-caption">スマホでQRをピッ → 情報が表示 → 「確認」ボタンで棚卸し完了</div>
+<img src="after.png" alt="QRを読み取って棚卸し完了" class="hero-img">
+<div class="img-caption">QRをピッ → 情報が表示 → 「確認」ボタンで棚卸し完了</div>
 
-<div class="solution-box">✅ <strong>スマホで読むだけ</strong>で、その備品の情報がすぐ見える</div>
+<div class="solution-box">✅ <strong>読み取るだけ</strong>で、その備品の情報がすぐ見える</div>
 <div class="solution-box">✅ <strong>「確認」ボタンを押すだけ</strong>で棚卸し完了。チェック作業が激減</div>
 <div class="solution-box">✅ <strong>確認されなかった備品が自動でリスト化</strong>される(=ヌケモレが見える化)</div>
 <div class="solution-box">✅ <strong>「使っていない備品」</strong>を他の課が見て、貰い受けることができる</div>
 
-<div class="highlight-box">
-  <h3>🎯 この提案で一番お伝えしたいこと</h3>
-  <p><strong>既存のシール・既存の運用をそのまま残したまま導入できます。</strong></p>
-  <p>QRシールは既存シールの横に"追い貼り"するだけ。管理番号も、目視確認の習慣も、今まで通り。<strong>移行作業に大きな手間はかかりません。</strong></p>
+<h2>3. 実際の使用イメージ（動かせます）</h2>
+
+<div class="mockup-section">
+  <p class="mockup-hint">👇 画面をタップして動きを体験してみてください</p>
+  <div class="phone-frame">
+    <div class="phone-screen">
+      <div class="app-header">
+        <img src="owl.png" alt="">
+        <div>
+          <div class="name">備品管理アプリ</div>
+          <div class="sub">管財課</div>
+        </div>
+      </div>
+
+      <!-- Screen 1: Home -->
+      <div class="screen active" id="screen-home">
+        <button class="scan-btn" onclick="showScreen('detail')">
+          <span class="qr-icon">📷</span>
+          QRコードを読み取る
+        </button>
+        <div style="margin-top: 20px; font-size: 0.8em; color: var(--muted); font-weight: bold;">最近確認した備品</div>
+        <div class="list-item" onclick="showScreen('detail')">
+          <div class="title">複合機 MX-3650</div>
+          <div class="meta">事務室 / 管理番号: A-0123</div>
+          <div class="status-ok">✓ 確認済み</div>
+        </div>
+        <div class="list-item" onclick="showScreen('detail')">
+          <div class="title">プロジェクター EB-1795F</div>
+          <div class="meta">第2会議室 / 管理番号: A-0456</div>
+          <div class="status-wait">○ 未確認</div>
+        </div>
+      </div>
+
+      <!-- Screen 2: Detail -->
+      <div class="screen" id="screen-detail">
+        <button class="back-btn" onclick="showScreen('home')">← 戻る</button>
+        <div class="detail-photo">🖨️</div>
+        <div style="font-weight: bold; font-size: 1em; margin-bottom: 8px;">複合機 MX-3650</div>
+        <div class="detail-row"><span class="k">管理番号</span><span class="v">A-0123</span></div>
+        <div class="detail-row"><span class="k">設置場所</span><span class="v">事務室</span></div>
+        <div class="detail-row"><span class="k">管理課</span><span class="v">管財課</span></div>
+        <div class="detail-row"><span class="k">購入日</span><span class="v">2022/04/15</span></div>
+        <div class="detail-row"><span class="k">状態</span><span class="v" style="color:var(--ok);">使用中</span></div>
+        <button class="confirm-btn" onclick="showScreen('done')">✓ この備品を確認した</button>
+      </div>
+
+      <!-- Screen 3: Done -->
+      <div class="screen" id="screen-done">
+        <div class="done-screen">
+          <div class="done-check">✓</div>
+          <h3>確認しました！</h3>
+          <p>最終棚卸日が<br>自動で更新されました</p>
+          <button class="scan-btn" style="margin-top: 20px;" onclick="showScreen('home')">次の備品を確認</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="mockup-hint" style="margin-top: 16px;">※ 実際のアプリは他課で導入実績のある <strong>Google AppSheet</strong> で構築します</p>
 </div>
 
-<img src="before.png" alt="管理画面の単純作業をなくす" class="hero-img">
-<div class="img-caption">煩雑な手作業から、シンプルな運用へ</div>
-
-<h2>3. 仕組みはこうなります</h2>
+<h2>4. 仕組みはこうなります</h2>
 
 <div class="flow">
   <div class="step"><div class="num">1</div><div class="label">備品に<br>QRシールを貼る</div></div>
-  <div class="step"><div class="num">2</div><div class="label">スマホの<br>カメラで読む</div></div>
+  <div class="step"><div class="num">2</div><div class="label">カメラで読む</div></div>
   <div class="step"><div class="num">3</div><div class="label">備品情報の<br>ページが開く</div></div>
   <div class="step"><div class="num">4</div><div class="label">「確認」ボタン<br>を押す</div></div>
   <div class="step"><div class="num">5</div><div class="label">棚卸し<br>完了 🎉</div></div>
 </div>
 
-<div class="card">
-  <h3>📱 スマホの標準カメラでOK</h3>
-  <p>専用アプリは不要です。iPhoneもAndroidも、標準のカメラアプリでQRコードを読み取れます。IT操作が苦手な方でも、<strong>「カメラを向けて、出てきたリンクをタップ」</strong>するだけ。</p>
-</div>
-
-<h2>4. 使うシステム</h2>
+<h2>5. 使うシステム</h2>
 
 <div class="card">
   <p>大学で既に使っている <strong>Google Workspace for Education</strong> の機能だけで実現できます。追加費用なし。新しいソフトの導入も不要。</p>
-  <p>見た目をアプリらしくしたい場合は、他課で導入実績のある <strong>AppSheet</strong> を薄く使います。データ本体はGoogleスプレッドシートなので、万が一の時も従来の方法で運用継続が可能です。</p>
+  <p>アプリらしい見た目は、他課で導入実績のある <strong>AppSheet</strong> を使います。データ本体はGoogleスプレッドシートなので、万が一の時も従来の方法で運用継続が可能です。</p>
 
   <table>
     <tr><th>使う機能</th><th>役割</th><th>追加費用</th></tr>
     <tr><td>Google スプレッドシート</td><td>備品一覧(データベース本体)</td><td class="yes">無料</td></tr>
     <tr><td>Google ドライブ</td><td>備品写真の保管</td><td class="yes">無料</td></tr>
-    <tr><td>AppSheet</td><td>スマホ用の見やすい画面</td><td class="yes">無料</td></tr>
+    <tr><td>AppSheet</td><td>スマホ/iPad用の見やすい画面</td><td class="yes">無料</td></tr>
     <tr><td>QRコード生成</td><td>スプレッドシート内で自動生成</td><td class="yes">無料</td></tr>
   </table>
 </div>
 
-<h2>5. 備品一覧に持たせる情報</h2>
+<h2>6. 移行コストは限りなく小さい</h2>
+
+<div class="highlight-box">
+  <h3>🎯 この提案で一番お伝えしたいこと</h3>
+  <p><strong>既存のシール・既存の運用をそのまま残したまま導入できます。</strong>管理番号も、目視確認の習慣も、今まで通り。</p>
+  <div class="big">
+    💡 既存シールを残すので、<u>一気に全部やる必要はありません</u>。<br>
+    新規購入品から順次QR化していき、棚卸しのタイミングで古い備品にも追加貼付していけばOKです。
+  </div>
+  <p>パイロット運用から始めて、うまく回る見込みが立ってから段階的に広げます。失敗しても元の運用に戻るだけ。</p>
+</div>
+
+<h2>7. 備品一覧に持たせる情報</h2>
 
 <div class="card">
 <ul class="clean">
@@ -257,31 +496,33 @@
 </ul>
 </div>
 
-<h2>6. 遊休備品の"お下がり"活用</h2>
+<h2>8. 遊休備品の"お下がり"活用</h2>
 
 <div class="card">
   <p>状態を<span class="tag">遊休</span>にした備品だけを表示する「お下がりリスト」を作れます。他の課の職員が閲覧して、「うちで使いたい」と申し出られる仕組み。</p>
   <p><strong>結果:</strong> 不要な購入が減り、廃棄コストも下がります。</p>
 </div>
 
-<h2>7. 導入ステップ(想定)</h2>
+<h2>9. 導入ステップ(想定)</h2>
 
 <div class="card">
 <table>
   <tr><th>ステップ</th><th>内容</th><th>所要</th></tr>
-  <tr><td>①</td><td>スプレッドシートの設計・試作</td><td>1〜2週</td></tr>
+  <tr><td>①</td><td>スプレッドシート・AppSheetの設計・試作</td><td>1〜2週</td></tr>
   <tr><td>②</td><td>1つの課でパイロット運用</td><td>2〜4週</td></tr>
   <tr><td>③</td><td>フィードバック反映・改善</td><td>1〜2週</td></tr>
   <tr><td>④</td><td>全課展開・QRシール順次貼付</td><td>数ヶ月かけて段階的に</td></tr>
 </table>
-  <p>💡 既存シールを残すので、<strong>一気に全部やる必要はありません。</strong>新規購入品から順次QR化していき、棚卸しのタイミングで古い備品にも追加貼付していけばOKです。</p>
 </div>
 
-<h2>8. よくある質問</h2>
+<h2>10. よくある質問</h2>
 
 <div class="card">
-  <h3>Q. スマホを持っていない職員はどうする?</h3>
-  <p>既存シールと目視確認の運用は残るので、従来通りの方法でも棚卸しは可能です。QRは<strong>"楽にできる人から楽をする"</strong>方式。</p>
+  <h3>Q. 読み取りに使う端末は?</h3>
+  <p>各課に配布されている<strong>iPad</strong>で読み取れます。職員個人のスマホを使う必要はありません。</p>
+  <div class="ipad-note">
+    📱 iPad標準のカメラアプリでQRコードを読み取れます。専用アプリのインストールも不要。カメラを向けて、出てきたリンクをタップするだけ。
+  </div>
 
   <h3>Q. QRシールが剥がれたら?</h3>
   <p>既存シールと管理番号が残っているので、番号から検索して再発行できます。情報は失われません。</p>
@@ -291,9 +532,12 @@
 
   <h3>Q. 古くてシールがない備品はどうする?</h3>
   <p>今回を機に、QRシールを新規付番して貼付できます。これまで管理外だったものも一覧に入れられます。</p>
+
+  <h3>Q. システムの保守は誰がやる?</h3>
+  <p>データ本体はGoogleスプレッドシートなので、<strong>各課員が直接編集・追加できます。</strong>AppSheet側(見た目)の改修はシステム課で対応します。</p>
 </div>
 
-<h2>9. 次に決めたいこと</h2>
+<h2>11. 次に決めたいこと</h2>
 <div class="card">
 <ul class="clean">
   <li>本学のGWSエディション確認(情シスへ問い合わせ)</li>
@@ -304,9 +548,17 @@
 </div>
 
 <footer>
+  <img src="owl.png" alt="" class="footer-owl">
   本資料は導入検討の初期提案です。実装にあたっては情報システム部門との協議が必要です。
 </footer>
 
 </div>
+
+<script>
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + name).classList.add('active');
+}
+</script>
 </body>
 </html>
