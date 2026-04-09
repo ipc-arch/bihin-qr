@@ -169,6 +169,54 @@
     position: relative;
   }
   .highlight-box h3 { margin-top: 0; color: var(--accent); font-size: 1.2em; }
+  /* Image overlay for migration-compare */
+  .overlay-img {
+    position: relative;
+    max-width: 700px;
+    margin: 20px auto;
+    display: block;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+  .overlay-img img { width: 100%; display: block; }
+  .overlay-label {
+    position: absolute;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: bold;
+    color: white;
+    font-size: 1em;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    white-space: nowrap;
+  }
+  .overlay-label.bad {
+    top: 3%; left: 4%;
+    background: #e53e3e;
+  }
+  .overlay-label.good {
+    top: 3%; right: 4%;
+    background: #48bb78;
+  }
+  .overlay-caption {
+    position: absolute;
+    bottom: 5%; left: 10%; right: 10%;
+    background: white;
+    padding: 10px 16px;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1em;
+    color: var(--text);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    line-height: 1.4;
+  }
+  .overlay-caption .accent { color: var(--ok); }
+  @media (max-width: 600px) {
+    .overlay-label { font-size: 0.75em; padding: 4px 10px; }
+    .overlay-caption { font-size: 0.8em; padding: 6px 10px; }
+  }
+
   .highlight-box .big {
     font-size: 1.15em;
     font-weight: 700;
@@ -480,6 +528,13 @@
     新規購入品から順次QR化していき、棚卸しのタイミングで古い備品にも追加貼付していけばOKです。
   </div>
   <p>パイロット運用から始めて、うまく回る見込みが立ってから段階的に広げます。失敗しても元の運用に戻るだけ。</p>
+</div>
+
+<div class="overlay-img">
+  <img src="migration-compare.png" alt="移行コスト比較">
+  <div class="overlay-label bad">✕ 大変な移行</div>
+  <div class="overlay-label good">✓ 今回のやり方</div>
+  <div class="overlay-caption">既存シールを活かす = <span class="accent">追い貼りするだけ</span></div>
 </div>
 
 <h2>7. 備品一覧に持たせる情報</h2>
