@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>備品管理アプリ セットアップ手順書</title>
+<link rel="icon" type="image/png" href="owl-icon-512.png">
+<style>
+  :root {
+    --main: #2b6cb0;
+    --accent: #ed8936;
+    --bg: #f7fafc;
+    --card: #ffffff;
+    --text: #2d3748;
+    --muted: #718096;
+    --border: #e2e8f0;
+    --ok: #48bb78;
+    --code-bg: #2d3748;
+    --code-text: #f7fafc;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "Hiragino Sans", "Yu Gothic", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    margin: 0;
+    padding: 20px;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; }
+
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: linear-gradient(135deg, #fff8ef 0%, #ffffff 100%);
+    padding: 24px;
+    border-radius: 16px;
+    border: 2px solid #f4e4cd;
+    margin-bottom: 24px;
+  }
+  .header img { width: 90px; height: 90px; flex-shrink: 0; }
+  .header h1 {
+    margin: 0 0 6px 0;
+    color: var(--main);
+    font-size: 1.5em;
+  }
+  .header p { margin: 0; color: var(--muted); font-size: 0.9em; }
+
+  h2 {
+    color: var(--main);
+    background: #ebf4ff;
+    padding: 14px 18px;
+    border-left: 6px solid var(--main);
+    margin-top: 50px;
+    font-size: 1.3em;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  h2 .step-num {
+    background: var(--main);
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9em;
+    flex-shrink: 0;
+  }
+  h3 { color: var(--accent); margin-top: 28px; font-size: 1.1em; }
+  h4 { color: var(--text); margin-top: 20px; }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 16px 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  }
+  .lead {
+    font-size: 1.05em;
+    background: #fffaf0;
+    border: 2px dashed var(--accent);
+    padding: 16px 20px;
+    border-radius: 10px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    background: white;
+    font-size: 0.92em;
+  }
+  th, td { border: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+  th { background: #edf2f7; white-space: nowrap; }
+  td code { background: #edf2f7; padding: 1px 6px; border-radius: 3px; font-size: 0.9em; }
+
+  pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 16px;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-size: 0.88em;
+    line-height: 1.6;
+    position: relative;
+  }
+  pre code { font-family: "SF Mono", Monaco, Consolas, monospace; }
+  .copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #4a5568;
+    color: white;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.75em;
+    cursor: pointer;
+  }
+  .copy-btn:hover { background: #718096; }
+  .copy-btn.copied { background: var(--ok); }
+
+  ol.steps { counter-reset: step; padding-left: 0; list-style: none; }
+  ol.steps > li {
+    counter-increment: step;
+    padding: 14px 16px 14px 60px;
+    position: relative;
+    background: white;
+    border-left: 4px solid var(--main);
+    margin: 10px 0;
+    border-radius: 0 8px 8px 0;
+  }
+  ol.steps > li::before {
+    content: counter(step);
+    position: absolute;
+    left: 14px;
+    top: 14px;
+    background: var(--main);
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+  }
+
+  .note {
+    background: #fffbeb;
+    border: 1px solid #f6e05e;
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-size: 0.92em;
+    margin: 12px 0;
+  }
+  .tip {
+    background: #f0fff4;
+    border-left: 4px solid var(--ok);
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin: 12px 0;
+    font-size: 0.95em;
+  }
+  .warn {
+    background: #fff5f5;
+    border-left: 4px solid #fc8181;
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin: 12px 0;
+    font-size: 0.95em;
+  }
+
+  .toc {
+    background: #f7fafc;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 24px;
+    margin: 20px 0;
+  }
+  .toc h3 { margin-top: 0; color: var(--main); font-size: 1em; }
+  .toc ol { margin: 0; padding-left: 24px; }
+  .toc a { color: var(--text); text-decoration: none; }
+  .toc a:hover { color: var(--main); text-decoration: underline; }
+
+  .kbd {
+    display: inline-block;
+    background: #edf2f7;
+    border: 1px solid var(--border);
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-family: monospace;
+    font-size: 0.9em;
+    color: var(--text);
+  }
+
+  footer {
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.9em;
+    text-align: center;
+  }
+  .back-link {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: var(--main);
+    text-decoration: none;
+    font-size: 0.95em;
+  }
+  .back-link:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<a href="./" class="back-link">← 紹介ページに戻る</a>
+
+<div class="header">
+  <img src="owl-icon-512.png" alt="">
+  <div>
+    <h1>備品管理アプリ セットアップ手順書</h1>
+    <p>コピペで進められる、Google Sheets + AppSheet プロトタイプ構築ガイド</p>
+  </div>
+</div>
+
+<div class="lead">
+  この手順書は、<strong>職場の管理者アカウント</strong>で一から備品管理アプリを作るための完全ガイドです。<br>
+  所要時間は初回で<strong>30〜60分</strong>、慣れれば20分程度。特別なプログラミング知識は不要です。
+</div>
+
+<div class="toc">
+  <h3>📋 作業の全体像</h3>
+  <ol>
+    <li><a href="#step1">Google Sheetsで備品台帳を作る</a>（10分）</li>
+    <li><a href="#step2">AppSheetでアプリを自動生成</a>（5分）</li>
+    <li><a href="#step3">アプリの見た目・動きを調整</a>（15分）</li>
+    <li><a href="#step4">確認アクション（棚卸し機能）を追加</a>（10分）</li>
+    <li><a href="#step5">QRコード生成とラベル印刷</a>（10分）</li>
+    <li><a href="#step6">アイコン・ブランディング</a>（5分）</li>
+    <li><a href="#step7">権限設定と共有</a>（5分）</li>
+  </ol>
+</div>
+
+<h2 id="step1"><span class="step-num">1</span>Google Sheetsで備品台帳を作る</h2>
+
+<div class="card">
+  <h3>1-1. 新規スプレッドシート作成</h3>
+  <ol class="steps">
+    <li>ブラウザで <a href="https://sheets.new" target="_blank">sheets.new</a> を開く</li>
+    <li>左上のタイトルを「<strong>備品台帳</strong>」に変更</li>
+    <li>シート名（下部タブ）を「<strong>Items</strong>」に変更（英数字推奨、AppSheet連携が安定）</li>
+  </ol>
+
+  <h3>1-2. ヘッダー行の作成</h3>
+  <p>以下をコピーして、A1セルに貼り付けてください。自動で14列に展開されます。</p>
+
+  <pre><button class="copy-btn" onclick="copyText(this)">コピー</button><code>ID	管理番号	品名	型番	設置場所	管理課	購入日	購入金額	写真	状態	最終棚卸日	棚卸者	QRコード	備考</code></pre>
+
+  <div class="tip">💡 <strong>Tabで区切られたテキスト</strong>をセルに貼り付けると、自動で各列に分かれて入ります。これがコピペ運用の基本パターン。</div>
+
+  <h3>1-3. サンプルデータの投入</h3>
+  <p>テスト用に、A2セルをクリックして以下を貼り付けてください（3件分）。</p>
+
+  <pre><button class="copy-btn" onclick="copyText(this)">コピー</button><code>A-0001	A-0001	複合機 MX-3650	SHARP MX-3650FN	事務室	管財課	2022-04-15	580000		使用中			A-0001	
+A-0002	A-0002	プロジェクター	EPSON EB-1795F	第2会議室	総務課	2020-09-10	95000		使用中			A-0002	
+A-0003	A-0003	ノートPC	ThinkPad X1 Carbon	情報システム課	システム課	2023-03-01	210000		遊休			A-0003	旧職員使用機、遊休化</code></pre>
+
+  <div class="note">
+    ⚠️ <strong>「管理番号」と「ID」と「QRコード」は同じ値にしておく</strong>のが最小構成のコツです。後で複雑化したくなったら分離できます。
+  </div>
+
+  <h3>1-4. 列の書式設定</h3>
+  <table>
+    <tr><th>列</th><th>書式</th><th>手順</th></tr>
+    <tr><td>G列（購入日）</td><td>日付</td><td>列を選択 → 表示形式 → 数字 → 日付</td></tr>
+    <tr><td>H列（購入金額）</td><td>通貨（¥）</td><td>列を選択 → 表示形式 → 数字 → 通貨</td></tr>
+    <tr><td>K列（最終棚卸日）</td><td>日時</td><td>列を選択 → 表示形式 → 数字 → 日時</td></tr>
+  </table>
+</div>
+
+<h2 id="step2"><span class="step-num">2</span>AppSheetでアプリを自動生成</h2>
+
+<div class="card">
+  <h3>2-1. AppSheetにログイン</h3>
+  <ol class="steps">
+    <li><a href="https://www.appsheet.com/" target="_blank">appsheet.com</a> にアクセス</li>
+    <li>右上「<strong>Sign in</strong>」→ <strong>職場の管理者アカウント</strong>（Google Workspace）でログイン</li>
+    <li>初回は利用規約に同意</li>
+  </ol>
+
+  <h3>2-2. スプレッドシートからアプリを作成</h3>
+  <ol class="steps">
+    <li>ダッシュボード右上 <strong>「+ Create」</strong> → <strong>「App」</strong> → <strong>「Start with existing data」</strong></li>
+    <li>アプリ名を <strong>「備品管理」</strong> と入力</li>
+    <li>Category は <strong>「Office」</strong> を選択</li>
+    <li><strong>「Choose your data」</strong> → Google Sheetsを選択 → 先ほど作った「備品台帳」を選択</li>
+    <li>1〜2分待つとAppSheetが自動でアプリの骨格を生成</li>
+  </ol>
+
+  <div class="tip">💡 自動生成直後のアプリでも、リスト表示と詳細画面はすでに動く状態です。ここから調整していきます。</div>
+</div>
+
+<h2 id="step3"><span class="step-num">3</span>アプリの見た目・動きを調整</h2>
+
+<div class="card">
+  <h3>3-1. 列の型（Type）を設定</h3>
+  <p>左メニュー <strong>Data</strong> → <strong>Columns</strong> → <strong>Items</strong> を開いて、各列の Type を以下のように変更します。</p>
+
+  <table>
+    <tr><th>列名</th><th>Type</th><th>設定内容</th></tr>
+    <tr><td>ID</td><td>Text</td><td><strong>Key</strong> にチェック（★マーク）</td></tr>
+    <tr><td>管理番号</td><td>Text</td><td>Show にチェック</td></tr>
+    <tr><td>品名</td><td>Text</td><td><strong>Label</strong> にチェック（リストで表示される主タイトル）</td></tr>
+    <tr><td>設置場所</td><td>Enum</td><td>後述の拡張時に候補リスト化可</td></tr>
+    <tr><td>管理課</td><td>Enum</td><td>Values: 管財課, 総務課, 教務課, システム課…</td></tr>
+    <tr><td>購入日</td><td>Date</td><td>—</td></tr>
+    <tr><td>購入金額</td><td>Price</td><td>Currency: JPY</td></tr>
+    <tr><td>写真</td><td>Image</td><td>Google Driveの画像、または撮影した写真を保存</td></tr>
+    <tr><td>状態</td><td>Enum</td><td>Values: <code>使用中</code>, <code>遊休</code>, <code>廃棄予定</code></td></tr>
+    <tr><td>最終棚卸日</td><td>DateTime</td><td>—</td></tr>
+    <tr><td>棚卸者</td><td>Email</td><td>—</td></tr>
+    <tr><td>QRコード</td><td>Text</td><td>—</td></tr>
+    <tr><td>備考</td><td>LongText</td><td>—</td></tr>
+  </table>
+
+  <h3>3-2. ビュー（画面）の設定</h3>
+  <p>左メニュー <strong>UX</strong> → <strong>Views</strong> で画面を整えます。</p>
+
+  <h4>メインビュー（一覧画面）</h4>
+  <ol class="steps">
+    <li>既存の <strong>「Items」</strong> ビューを選択</li>
+    <li>View type を <strong>「deck」</strong> に変更（写真+タイトルのカード表示）</li>
+    <li>Primary header: <code>品名</code></li>
+    <li>Secondary header: <code>設置場所</code></li>
+    <li>Summary column: <code>状態</code></li>
+    <li>Main image: <code>写真</code></li>
+  </ol>
+
+  <h4>遊休備品ビュー（追加）</h4>
+  <ol class="steps">
+    <li><strong>「+ New View」</strong> → Name: <code>遊休備品</code></li>
+    <li>For this data: <code>Items</code></li>
+    <li>View type: <code>deck</code></li>
+    <li>Position: <code>menu</code></li>
+    <li>Row filter condition: <code>[状態] = "遊休"</code></li>
+    <li>Icon: 🎁（リサイクル/ギフト系）</li>
+  </ol>
+
+  <div class="tip">💡 これで「遊休備品だけ表示するページ」が自動で追加され、他課の職員が"お下がり候補"を見られます。</div>
+</div>
+
+<h2 id="step4"><span class="step-num">4</span>確認アクション（棚卸し機能）を追加</h2>
+
+<div class="card">
+  <h3>4-1. 「確認」ボタンのアクション作成</h3>
+  <ol class="steps">
+    <li>左メニュー <strong>Behavior</strong> → <strong>Actions</strong></li>
+    <li><strong>「+ New Action」</strong></li>
+    <li>Action name: <code>✓ この備品を確認した</code></li>
+    <li>For a record of this table: <code>Items</code></li>
+    <li>Do this: <strong>Data: set the values of some columns in this row</strong></li>
+  </ol>
+
+  <h4>Set these columns:</h4>
+  <p>以下を2行追加してください。</p>
+
+  <table>
+    <tr><th>Column</th><th>Value（式）</th></tr>
+    <tr><td>最終棚卸日</td><td><code>NOW()</code></td></tr>
+    <tr><td>棚卸者</td><td><code>USEREMAIL()</code></td></tr>
+  </table>
+
+  <h4>Appearance設定</h4>
+  <table>
+    <tr><th>項目</th><th>値</th></tr>
+    <tr><td>Display name</td><td><code>✓ この備品を確認した</code></td></tr>
+    <tr><td>Action icon</td><td>check（チェックマーク）</td></tr>
+    <tr><td>Prominence</td><td>Display prominently（目立つ位置）</td></tr>
+    <tr><td>Button color</td><td>緑系</td></tr>
+  </table>
+
+  <h3>4-2. 確認後の自動フィードバック（オプション）</h3>
+  <ol class="steps">
+    <li>同じActionの <strong>Needs confirmation?</strong> を ON にすると、押す前に確認ダイアログが出せます</li>
+    <li>Confirmation message: <code>「&CONCATENATE([品名], "」を確認済みにします。よろしいですか？")</code></li>
+  </ol>
+
+  <h3>4-3. ヌケモレ検出ビュー</h3>
+  <p>最終棚卸日が古いままの備品を一覧化するビューを作ります。</p>
+  <ol class="steps">
+    <li><strong>UX</strong> → <strong>Views</strong> → <strong>+ New View</strong></li>
+    <li>Name: <code>未確認の備品</code></li>
+    <li>View type: <code>deck</code></li>
+    <li>Row filter: <code>OR(ISBLANK([最終棚卸日]), [最終棚卸日] &lt; TODAY() - 365)</code></li>
+    <li>Icon: ⚠️</li>
+  </ol>
+
+  <div class="note">⚠️ 条件の <code>365</code> は「1年以上前に確認されたもの」の意味。半年なら180、四半期なら90に変更可。</div>
+</div>
+
+<h2 id="step5"><span class="step-num">5</span>QRコード生成とラベル印刷</h2>
+
+<div class="card">
+  <h3>5-1. スプレッドシートにQR画像列を追加</h3>
+  <p>Google Sheetsに戻って、<strong>新しい列を右端に追加</strong>し、1行目に<code>QR画像</code>と入力。2行目（A-0001の行）に以下を貼り付け。</p>
+
+  <pre><button class="copy-btn" onclick="copyText(this)">コピー</button><code>=IMAGE("https://api.qrserver.com/v1/create-qr-code/?size=200x200&data="&ENCODEURL(A2))</code></pre>
+
+  <p>入力後、セル右下の青い四角をドラッグして下にコピー → 全行にQRコードが自動表示されます。</p>
+
+  <div class="tip">💡 A列（ID = 管理番号）を埋め込んでいるので、QRを読むと管理番号が直接出ます。AppSheet側のスキャン機能で即検索可能。</div>
+
+  <h3>5-2. AppSheetでQRスキャン機能を有効化</h3>
+  <ol class="steps">
+    <li>AppSheetで <strong>Data</strong> → <strong>Columns</strong> → <code>管理番号</code> の列を選択</li>
+    <li>「Scannable?」を <strong>ON</strong></li>
+    <li>保存</li>
+  </ol>
+  <p>これでアプリ内に「Scan」ボタンが出現し、QRを読むと該当備品がすぐ表示されます。</p>
+
+  <h3>5-3. 印刷用ラベルシートの作成</h3>
+  <p>既存シール横に貼る用のQRラベルを印刷します。スプレッドシートに <strong>新しいシート</strong> を追加（下部の + ボタン）し、名前を <code>ラベル印刷</code> に変更。</p>
+
+  <p>A1セルに以下の式を貼り付けてください。Items シートから自動で引っ張って表示します。</p>
+
+  <pre><button class="copy-btn" onclick="copyText(this)">コピー</button><code>=QUERY(Items!A:C, "SELECT A, C WHERE A IS NOT NULL", 1)</code></pre>
+
+  <p>次にC列（QR画像）に、2行目から以下を貼り付け、下にドラッグ：</p>
+
+  <pre><button class="copy-btn" onclick="copyText(this)">コピー</button><code>=IMAGE("https://api.qrserver.com/v1/create-qr-code/?size=150x150&data="&ENCODEURL(A2))</code></pre>
+
+  <p>行の高さを150pxくらいに広げ、<kbd>Ctrl</kbd>+<kbd>P</kbd> で印刷 → 用紙サイズを調整して印刷すれば、QR付き管理番号ラベルの完成です。</p>
+
+  <div class="tip">💡 よりキレイに印刷したい場合はA-oneラベルシール（62面/84面など）用のレイアウトテンプレートに貼り直すと実用的です。</div>
+</div>
+
+<h2 id="step6"><span class="step-num">6</span>アイコン・ブランディング</h2>
+
+<div class="card">
+  <h3>6-1. アプリアイコンをフクロウに変更</h3>
+  <ol class="steps">
+    <li>このページから <a href="owl-icon-512.png" download>owl-icon-512.png</a> をダウンロード</li>
+    <li>AppSheetで左メニュー <strong>UX</strong> → <strong>Brand</strong></li>
+    <li><strong>App logo</strong> の欄に画像をアップロード</li>
+    <li><strong>Primary Color</strong> を <code>#2b6cb0</code>（紹介ページと同じブルー）に設定</li>
+    <li>保存</li>
+  </ol>
+
+  <h3>6-2. ホーム画面の調整</h3>
+  <ol class="steps">
+    <li><strong>UX</strong> → <strong>Options</strong></li>
+    <li><strong>Starting view</strong>: <code>Items</code>（一覧画面を最初に表示）</li>
+    <li><strong>Show bottom bar</strong>: ON</li>
+  </ol>
+</div>
+
+<h2 id="step7"><span class="step-num">7</span>権限設定と共有</h2>
+
+<div class="card">
+  <h3>7-1. アプリの共有設定</h3>
+  <ol class="steps">
+    <li>左メニュー <strong>Users</strong> → <strong>Users</strong></li>
+    <li>Add users に職員のメールアドレスを入力（カンマ区切りで一括可）</li>
+    <li>Role: <code>User</code>（通常職員）または <code>Admin</code>（管財課）</li>
+    <li>Send invite</li>
+  </ol>
+
+  <h3>7-2. 機密備品の権限分離（必要な場合）</h3>
+  <p>特定の備品を管財課のみ閲覧可にしたい場合：</p>
+  <ol class="steps">
+    <li><strong>Security</strong> → <strong>Security Filters</strong></li>
+    <li>Filter条件に <code>OR([管理課] = "管財課", USEREMAIL() IN Admins[Email])</code> のような式を設定</li>
+  </ol>
+
+  <div class="warn">⚠️ セキュリティフィルタの設定は慎重に。最初は権限分離なしで運用し、必要性が出てから追加する方が事故が少ないです。</div>
+
+  <h3>7-3. 配布</h3>
+  <ol class="steps">
+    <li>左メニュー <strong>Share</strong></li>
+    <li><strong>Install link</strong> をコピー</li>
+    <li>管財課の職員にメール or チャットで送付</li>
+    <li>職員は各iPadのブラウザでリンクを開き、ホーム画面に追加</li>
+  </ol>
+</div>
+
+<h2>🎯 動作確認チェックリスト</h2>
+
+<div class="card">
+  <ul>
+    <li>✅ 一覧画面で3件のサンプル備品が表示される</li>
+    <li>✅ 備品をタップすると詳細画面が開く</li>
+    <li>✅ 「✓ この備品を確認した」ボタンが目立つ位置にある</li>
+    <li>✅ ボタンを押すと「最終棚卸日」と「棚卸者」が自動で記入される</li>
+    <li>✅ 「遊休備品」ビューでA-0003だけが表示される</li>
+    <li>✅ 「未確認の備品」ビューで該当行が出る</li>
+    <li>✅ スキャン機能で管理番号を読めば該当備品に飛ぶ</li>
+    <li>✅ アプリアイコンがフクロウになっている</li>
+  </ul>
+</div>
+
+<h2>🔧 トラブルシュート</h2>
+
+<div class="card">
+  <h4>Q. 列の型を変更しても反映されない</h4>
+  <p>右上の「Save」ボタンを押し忘れている可能性。AppSheetは明示的な保存が必要です。</p>
+
+  <h4>Q. スプレッドシートを編集したのにアプリに反映されない</h4>
+  <p>AppSheetダッシュボードで「Regenerate Structure」を実行（Data → テーブル名横の︙メニュー）。</p>
+
+  <h4>Q. QR画像がスプレッドシートに表示されない</h4>
+  <p><code>ENCODEURL()</code> 関数を使っているか確認。特殊文字を含むIDはエンコードが必要です。</p>
+
+  <h4>Q. アプリが重い</h4>
+  <p>サンプル期間は問題ないが、1000件を超えたら <strong>Security Filter</strong> で課ごとに絞り込むと速くなります。</p>
+
+  <h4>Q. 無料プランの制限は?</h4>
+  <p>AppSheet Core（Google Workspace Education Plusに含まれる）は10ユーザーまで無料相当。それ以上はライセンス要確認。</p>
+</div>
+
+<h2>📝 次のステップ（発展）</h2>
+
+<div class="card">
+  <ul>
+    <li><strong>購入時ワークフロー連携</strong>: Google Formsで購入申請 → スプレッドシートに自動追加 → QR自動発行</li>
+    <li><strong>写真添付フロー</strong>: iPadで備品を撮影 → AppSheetが自動でGoogle Driveに保存</li>
+    <li><strong>ヌケモレ自動通知</strong>: 棚卸し期間終了時、未確認備品リストを管財課にメール自動送信（Google Apps Script）</li>
+    <li><strong>遊休備品の申請フォーム</strong>: 「これ欲しい」ボタンで他課から申請を送れる仕組み</li>
+  </ul>
+</div>
+
+<footer>
+  備品管理アプリ セットアップ手順書 / ipc-arch / 2026<br>
+  改修・フィードバックはシステム課まで
+</footer>
+
+</div>
+
+<script>
+function copyText(btn) {
+  const code = btn.nextElementSibling.textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = "✓ コピー済";
+    btn.classList.add("copied");
+    setTimeout(() => {
+      btn.textContent = "コピー";
+      btn.classList.remove("copied");
+    }, 2000);
+  });
+}
+</script>
+</body>
+</html>
