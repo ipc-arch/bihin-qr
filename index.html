@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>備品管理QRコード導入のご提案</title>
+<style>
+  :root {
+    --main: #2b6cb0;
+    --accent: #ed8936;
+    --bg: #f7fafc;
+    --card: #ffffff;
+    --text: #2d3748;
+    --muted: #718096;
+    --border: #e2e8f0;
+    --ok: #48bb78;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "Hiragino Sans", "Yu Gothic", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    margin: 0;
+    padding: 20px;
+  }
+  .wrap { max-width: 820px; margin: 0 auto; }
+  h1 {
+    color: var(--main);
+    border-bottom: 4px solid var(--main);
+    padding-bottom: 12px;
+    font-size: 1.8em;
+  }
+  h2 {
+    color: var(--main);
+    background: #ebf4ff;
+    padding: 12px 16px;
+    border-left: 6px solid var(--main);
+    margin-top: 40px;
+    font-size: 1.3em;
+  }
+  h3 { color: var(--accent); margin-top: 24px; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 16px 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  }
+  .lead {
+    font-size: 1.1em;
+    background: #fffaf0;
+    border: 2px dashed var(--accent);
+    padding: 16px 20px;
+    border-radius: 10px;
+  }
+  .hero-img {
+    width: 100%;
+    max-width: 700px;
+    display: block;
+    margin: 20px auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+  .img-caption {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.9em;
+    margin-top: -10px;
+    margin-bottom: 20px;
+  }
+  .problem-box {
+    background: #fff5f5;
+    border-left: 5px solid #fc8181;
+    padding: 12px 18px;
+    margin: 8px 0;
+  }
+  .solution-box {
+    background: #f0fff4;
+    border-left: 5px solid var(--ok);
+    padding: 12px 18px;
+    margin: 8px 0;
+  }
+  .flow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 20px 0;
+  }
+  .step {
+    flex: 1 1 140px;
+    background: var(--main);
+    color: white;
+    padding: 16px 12px;
+    border-radius: 10px;
+    text-align: center;
+  }
+  .step .num {
+    display: inline-block;
+    background: white;
+    color: var(--main);
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+  .step .label { font-size: 0.95em; font-weight: 600; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    background: white;
+  }
+  th, td {
+    border: 1px solid var(--border);
+    padding: 10px 12px;
+    text-align: left;
+  }
+  th { background: #edf2f7; }
+  .yes { color: var(--ok); font-weight: bold; }
+  .note {
+    background: #fffbeb;
+    border: 1px solid #f6e05e;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 0.95em;
+    margin: 10px 0;
+  }
+  ul.clean { list-style: none; padding-left: 0; }
+  ul.clean li {
+    padding: 6px 0 6px 28px;
+    position: relative;
+  }
+  ul.clean li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--ok);
+    font-weight: bold;
+    font-size: 1.2em;
+  }
+  .tag {
+    display: inline-block;
+    background: var(--main);
+    color: white;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.85em;
+    margin-right: 6px;
+  }
+  .highlight-box {
+    background: linear-gradient(135deg, #fff5f5 0%, #f0fff4 100%);
+    border: 3px solid var(--accent);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 24px 0;
+  }
+  .highlight-box h3 {
+    margin-top: 0;
+    color: var(--accent);
+    font-size: 1.2em;
+  }
+  footer {
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.9em;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>📦 備品管理へのQRコード導入について</h1>
+
+<div class="lead">
+  <strong>現在の管理シールはそのまま残します。</strong><br>
+  QRコードは<strong>「追加で貼るだけ」</strong>。目視での確認・既存の運用は今まで通り。<br>
+  スマホで「ピッ」と読み取れば、棚卸しや備品情報の確認が一瞬で終わります。
+</div>
+
+<h2>1. 今起きている困りごと</h2>
+
+<img src="problem.png" alt="備品管理に悩む職員" class="hero-img">
+<div class="img-caption">年次棚卸し、シールの有無、備品の所在…頭を悩ませる作業</div>
+
+<div class="problem-box">❌ 年1回の棚卸しで、各課にかなりの手間がかかる</div>
+<div class="problem-box">❌ シール貼付や写真添付が徹底されず、ヌケモレが発生</div>
+<div class="problem-box">❌ どの課で使われていない備品があるか、把握しづらい</div>
+<div class="problem-box">❌ 古い備品で、シールがない・剥がれているものがある</div>
+
+<h2>2. QRコードで何が変わるか</h2>
+
+<img src="after.png" alt="スマホでQRを読み取って棚卸し完了" class="hero-img">
+<div class="img-caption">スマホでQRをピッ → 情報が表示 → 「確認」ボタンで棚卸し完了</div>
+
+<div class="solution-box">✅ <strong>スマホで読むだけ</strong>で、その備品の情報がすぐ見える</div>
+<div class="solution-box">✅ <strong>「確認」ボタンを押すだけ</strong>で棚卸し完了。チェック作業が激減</div>
+<div class="solution-box">✅ <strong>確認されなかった備品が自動でリスト化</strong>される(=ヌケモレが見える化)</div>
+<div class="solution-box">✅ <strong>「使っていない備品」</strong>を他の課が見て、貰い受けることができる</div>
+
+<div class="highlight-box">
+  <h3>🎯 この提案で一番お伝えしたいこと</h3>
+  <p><strong>既存のシール・既存の運用をそのまま残したまま導入できます。</strong></p>
+  <p>QRシールは既存シールの横に"追い貼り"するだけ。管理番号も、目視確認の習慣も、今まで通り。<strong>移行作業に大きな手間はかかりません。</strong></p>
+</div>
+
+<img src="before.png" alt="管理画面の単純作業をなくす" class="hero-img">
+<div class="img-caption">煩雑な手作業から、シンプルな運用へ</div>
+
+<h2>3. 仕組みはこうなります</h2>
+
+<div class="flow">
+  <div class="step"><div class="num">1</div><div class="label">備品に<br>QRシールを貼る</div></div>
+  <div class="step"><div class="num">2</div><div class="label">スマホの<br>カメラで読む</div></div>
+  <div class="step"><div class="num">3</div><div class="label">備品情報の<br>ページが開く</div></div>
+  <div class="step"><div class="num">4</div><div class="label">「確認」ボタン<br>を押す</div></div>
+  <div class="step"><div class="num">5</div><div class="label">棚卸し<br>完了 🎉</div></div>
+</div>
+
+<div class="card">
+  <h3>📱 スマホの標準カメラでOK</h3>
+  <p>専用アプリは不要です。iPhoneもAndroidも、標準のカメラアプリでQRコードを読み取れます。IT操作が苦手な方でも、<strong>「カメラを向けて、出てきたリンクをタップ」</strong>するだけ。</p>
+</div>
+
+<h2>4. 使うシステム</h2>
+
+<div class="card">
+  <p>大学で既に使っている <strong>Google Workspace for Education</strong> の機能だけで実現できます。追加費用なし。新しいソフトの導入も不要。</p>
+  <p>見た目をアプリらしくしたい場合は、他課で導入実績のある <strong>AppSheet</strong> を薄く使います。データ本体はGoogleスプレッドシートなので、万が一の時も従来の方法で運用継続が可能です。</p>
+
+  <table>
+    <tr><th>使う機能</th><th>役割</th><th>追加費用</th></tr>
+    <tr><td>Google スプレッドシート</td><td>備品一覧(データベース本体)</td><td class="yes">無料</td></tr>
+    <tr><td>Google ドライブ</td><td>備品写真の保管</td><td class="yes">無料</td></tr>
+    <tr><td>AppSheet</td><td>スマホ用の見やすい画面</td><td class="yes">無料</td></tr>
+    <tr><td>QRコード生成</td><td>スプレッドシート内で自動生成</td><td class="yes">無料</td></tr>
+  </table>
+</div>
+
+<h2>5. 備品一覧に持たせる情報</h2>
+
+<div class="card">
+<ul class="clean">
+  <li><strong>管理番号</strong> (既存のものをそのまま使用)</li>
+  <li><strong>品名・型番</strong></li>
+  <li><strong>設置場所・管理している課</strong></li>
+  <li><strong>購入日・購入金額</strong></li>
+  <li><strong>備品の写真</strong></li>
+  <li><strong>状態</strong> (使用中 / 遊休 / 廃棄予定)</li>
+  <li><strong>最終棚卸日・棚卸した人</strong> (自動記録)</li>
+</ul>
+</div>
+
+<h2>6. 遊休備品の"お下がり"活用</h2>
+
+<div class="card">
+  <p>状態を<span class="tag">遊休</span>にした備品だけを表示する「お下がりリスト」を作れます。他の課の職員が閲覧して、「うちで使いたい」と申し出られる仕組み。</p>
+  <p><strong>結果:</strong> 不要な購入が減り、廃棄コストも下がります。</p>
+</div>
+
+<h2>7. 導入ステップ(想定)</h2>
+
+<div class="card">
+<table>
+  <tr><th>ステップ</th><th>内容</th><th>所要</th></tr>
+  <tr><td>①</td><td>スプレッドシートの設計・試作</td><td>1〜2週</td></tr>
+  <tr><td>②</td><td>1つの課でパイロット運用</td><td>2〜4週</td></tr>
+  <tr><td>③</td><td>フィードバック反映・改善</td><td>1〜2週</td></tr>
+  <tr><td>④</td><td>全課展開・QRシール順次貼付</td><td>数ヶ月かけて段階的に</td></tr>
+</table>
+  <p>💡 既存シールを残すので、<strong>一気に全部やる必要はありません。</strong>新規購入品から順次QR化していき、棚卸しのタイミングで古い備品にも追加貼付していけばOKです。</p>
+</div>
+
+<h2>8. よくある質問</h2>
+
+<div class="card">
+  <h3>Q. スマホを持っていない職員はどうする?</h3>
+  <p>既存シールと目視確認の運用は残るので、従来通りの方法でも棚卸しは可能です。QRは<strong>"楽にできる人から楽をする"</strong>方式。</p>
+
+  <h3>Q. QRシールが剥がれたら?</h3>
+  <p>既存シールと管理番号が残っているので、番号から検索して再発行できます。情報は失われません。</p>
+
+  <h3>Q. 機密性の高い備品の情報が見られてしまわない?</h3>
+  <p>権限設定ができます。機密備品は管財課のみ閲覧できるように分けます。</p>
+
+  <h3>Q. 古くてシールがない備品はどうする?</h3>
+  <p>今回を機に、QRシールを新規付番して貼付できます。これまで管理外だったものも一覧に入れられます。</p>
+</div>
+
+<h2>9. 次に決めたいこと</h2>
+<div class="card">
+<ul class="clean">
+  <li>本学のGWSエディション確認(情シスへ問い合わせ)</li>
+  <li>管理対象の備品総数の概算</li>
+  <li>パイロット運用する課の選定</li>
+  <li>購入時ワークフローへの組み込み方</li>
+</ul>
+</div>
+
+<footer>
+  本資料は導入検討の初期提案です。実装にあたっては情報システム部門との協議が必要です。
+</footer>
+
+</div>
+</body>
+</html>
