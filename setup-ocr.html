@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OCR型番自動読み取り セットアップガイド</title>
+<link rel="icon" type="image/png" href="owl-icon-512.png">
+<style>
+  :root {
+    --main: #2b6cb0;
+    --accent: #ed8936;
+    --bg: #f7fafc;
+    --card: #ffffff;
+    --text: #2d3748;
+    --muted: #718096;
+    --border: #e2e8f0;
+    --ok: #48bb78;
+    --code-bg: #1a202c;
+    --code-text: #e2e8f0;
+    --ocr: #d69e2e;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "Hiragino Sans", "Yu Gothic", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    margin: 0;
+    padding: 20px;
+  }
+  .wrap { max-width: 920px; margin: 0 auto; }
+
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%);
+    padding: 24px;
+    border-radius: 16px;
+    border: 2px solid #f6e05e;
+    margin-bottom: 24px;
+  }
+  .header img { width: 90px; height: 90px; flex-shrink: 0; }
+  .header h1 { margin: 0 0 6px 0; color: var(--ocr); font-size: 1.4em; }
+  .header p { margin: 0; color: var(--muted); font-size: 0.9em; }
+
+  h2 {
+    color: #744210;
+    background: #fffbeb;
+    padding: 14px 18px;
+    border-left: 6px solid var(--ocr);
+    margin-top: 50px;
+    font-size: 1.2em;
+  }
+  h3 { color: var(--accent); margin-top: 28px; font-size: 1.05em; }
+  h4 { color: var(--text); margin-top: 20px; }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 16px 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  }
+  .lead {
+    font-size: 1.05em;
+    background: #fffaf0;
+    border: 2px dashed var(--accent);
+    padding: 16px 20px;
+    border-radius: 10px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    background: white;
+    font-size: 0.88em;
+  }
+  th, td { border: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+  th { background: #edf2f7; white-space: nowrap; }
+  td code { background: #edf2f7; padding: 1px 6px; border-radius: 3px; font-size: 0.9em; }
+
+  pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 16px;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-size: 0.82em;
+    line-height: 1.5;
+    position: relative;
+    tab-size: 2;
+  }
+  .copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #4a5568;
+    color: white;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.75em;
+    cursor: pointer;
+  }
+  .copy-btn:hover { background: #718096; }
+  .copy-btn.copied { background: var(--ok); }
+
+  ol.steps { counter-reset: step; padding-left: 0; list-style: none; }
+  ol.steps > li {
+    counter-increment: step;
+    padding: 12px 16px 12px 56px;
+    position: relative;
+    background: white;
+    border-left: 4px solid var(--ocr);
+    margin: 10px 0;
+    border-radius: 0 8px 8px 0;
+  }
+  ol.steps > li::before {
+    content: counter(step);
+    position: absolute;
+    left: 12px; top: 12px;
+    background: var(--ocr);
+    color: white;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; font-size: 0.9em;
+  }
+
+  .note {
+    background: #fffbeb;
+    border: 1px solid #f6e05e;
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-size: 0.92em;
+    margin: 12px 0;
+  }
+  .tip {
+    background: #f0fff4;
+    border-left: 4px solid var(--ok);
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin: 12px 0;
+    font-size: 0.95em;
+  }
+  .warn {
+    background: #fff5f5;
+    border-left: 4px solid #fc8181;
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin: 12px 0;
+    font-size: 0.95em;
+  }
+
+  .flow-diagram {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 16px 0;
+    text-align: center;
+  }
+  .flow-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 10px 0;
+  }
+  .flow-box {
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 0.82em;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .flow-box.action { background: var(--ocr); color: white; }
+  .flow-box.data { background: #ebf4ff; color: var(--main); border: 2px solid var(--main); }
+  .flow-box.result { background: #f0fff4; color: #276749; border: 2px solid var(--ok); }
+  .flow-arrow { font-size: 1.2em; color: var(--muted); }
+
+  .photo-tips {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .photo-tip {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+  }
+  .photo-tip .emoji { font-size: 2.5em; margin-bottom: 8px; }
+  .photo-tip .label { font-weight: bold; font-size: 0.9em; }
+  .photo-tip .desc { font-size: 0.8em; color: var(--muted); margin-top: 4px; }
+  .photo-tip.good { border-color: var(--ok); }
+  .photo-tip.bad { border-color: #fc8181; }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: var(--main);
+    text-decoration: none;
+    font-size: 0.95em;
+  }
+  .back-link:hover { text-decoration: underline; }
+
+  footer {
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.9em;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<a href="setup-it.html" class="back-link">← IT部門拡張ガイドに戻る</a>
+
+<div class="header">
+  <img src="owl-icon-512.png" alt="">
+  <div>
+    <h1>📸 OCR型番自動読み取りガイド</h1>
+    <p>Google Apps Script + Cloud Vision API で備品シールからテキストを自動抽出</p>
+  </div>
+</div>
+
+<div class="lead">
+  <strong>やること:</strong> iPadで備品シールを撮影 → Driveに保存 → 型番・シリアル番号・管理番号が自動でスプレッドシートに転記される<br>
+  <strong>コスト:</strong> 月1,000回まで無料（Cloud Vision API無料枠）<br>
+  <strong>所要時間:</strong> 初期セットアップ 20〜30分
+</div>
+
+<h2>全体フロー</h2>
+
+<div class="flow-diagram">
+  <div class="flow-row">
+    <div class="flow-box action">📸 iPadで撮影</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box data">📁 Drive保存</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box action">🤖 GAS → Cloud Vision</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box result">📝 型番・S/N自動転記</div>
+  </div>
+  <p style="font-size:0.85em;color:var(--muted);margin-top:12px;">AppSheetで撮影した写真URLがシートに入る → GASが検知 → OCR → 結果を書き戻し</p>
+</div>
+
+<h2>Step 1: GCPプロジェクトでCloud Vision APIを有効化</h2>
+
+<div class="card">
+  <ol class="steps">
+    <li><a href="https://console.cloud.google.com/" target="_blank">console.cloud.google.com</a> に<strong>職場の管理者アカウント</strong>でログイン</li>
+    <li>上部の「プロジェクトを選択」→「<strong>新しいプロジェクト</strong>」<br>
+      プロジェクト名: <code>bihin-ocr</code>（何でもOK）<br>
+      「作成」をクリック</li>
+    <li>作成したプロジェクトを選択した状態で、左メニュー「<strong>APIとサービス</strong>」→「<strong>ライブラリ</strong>」</li>
+    <li>検索欄に <code>Cloud Vision API</code> と入力 → 表示されたカードをクリック → 「<strong>有効にする</strong>」</li>
+    <li>左メニュー「<strong>APIとサービス</strong>」→「<strong>認証情報</strong>」→「<strong>+ 認証情報を作成</strong>」→「<strong>APIキー</strong>」</li>
+    <li>生成されたAPIキーをコピーして安全な場所にメモ（後でGASに貼る）</li>
+  </ol>
+
+  <div class="warn">
+    ⚠️ <strong>APIキーの制限を必ず設定してください。</strong><br>
+    認証情報ページでAPIキーをクリック → 「APIの制限」→「キーを制限」→ <code>Cloud Vision API</code> のみ選択 → 保存。<br>
+    これをしないとキーが漏れた場合に他のAPIも呼ばれてしまいます。
+  </div>
+
+  <div class="note">
+    💡 <strong>大学のGCP利用ポリシーを確認してください。</strong>組織によってはプロジェクト作成にIT部門の承認が必要な場合があります。自分がシステム課なら話は早い。
+  </div>
+</div>
+
+<h2>Step 2: Google Apps Scriptのセットアップ</h2>
+
+<div class="card">
+  <ol class="steps">
+    <li>備品台帳のスプレッドシートを開く</li>
+    <li>メニューバー「<strong>拡張機能</strong>」→「<strong>Apps Script</strong>」</li>
+    <li>エディタが開いたら、既存のコード（<code>function myFunction(){}</code>）を全削除</li>
+    <li>以下のコードを<strong>全文コピーして貼り付け</strong></li>
+  </ol>
+</div>
+
+<h3>GASコード（全文コピペ）</h3>
+
+<pre><button class="copy-btn" onclick="copyText(this)">コピー</button><code>// ============================================================
+// 備品管理 OCR 自動読み取りスクリプト
+// Cloud Vision API (TEXT_DETECTION) を使用
+// ============================================================
+
+// ★★★ ここにStep 1で取得したAPIキーを貼り付け ★★★
+const VISION_API_KEY = 'YOUR_API_KEY_HERE';
+
+// ---------- 設定 ----------
+const CONFIG = {
+  sheetName: 'Items',          // シート名
+  col: {
+    photoUrl:    14,  // N列: 型番写真のURL
+    ocrRaw:      25,  // Y列: OCR生テキスト（デバッグ用）
+    modelParsed: 4,   // D列: 型番（自動転記先）
+    serialParsed: 16, // P列: シリアル番号（自動転記先）
+    ocrStatus:   26,  // Z列: OCR処理ステータス
+  },
+  headerRow: 1,
+  startRow: 2,
+};
+
+// ---------- メイン: 全行スキャン ----------
+function runOcrAll() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName(CONFIG.sheetName);
+  if (!sheet) { Logger.log('シート未検出: ' + CONFIG.sheetName); return; }
+
+  const lastRow = sheet.getLastRow();
+  if (lastRow < CONFIG.startRow) return;
+
+  let processed = 0;
+  for (let row = CONFIG.startRow; row <= lastRow; row++) {
+    const photoUrl = sheet.getRange(row, CONFIG.col.photoUrl).getValue();
+    const status   = sheet.getRange(row, CONFIG.col.ocrStatus).getValue();
+
+    // 写真URLがあり、まだOCR未実行の行だけ処理
+    if (photoUrl && !status) {
+      try {
+        const result = ocrFromDriveUrl(photoUrl);
+        if (result.text) {
+          sheet.getRange(row, CONFIG.col.ocrRaw).setValue(result.text);
+
+          const parsed = parseOcrText(result.text);
+          // 既に手入力があれば上書きしない
+          if (!sheet.getRange(row, CONFIG.col.modelParsed).getValue() && parsed.model) {
+            sheet.getRange(row, CONFIG.col.modelParsed).setValue(parsed.model);
+          }
+          if (!sheet.getRange(row, CONFIG.col.serialParsed).getValue() && parsed.serial) {
+            sheet.getRange(row, CONFIG.col.serialParsed).setValue(parsed.serial);
+          }
+          sheet.getRange(row, CONFIG.col.ocrStatus).setValue('✅ ' + new Date().toLocaleString('ja-JP'));
+          processed++;
+        } else {
+          sheet.getRange(row, CONFIG.col.ocrStatus).setValue('⚠️ テキスト検出なし');
+        }
+      } catch (e) {
+        sheet.getRange(row, CONFIG.col.ocrStatus).setValue('❌ ' + e.message);
+        Logger.log('Row ' + row + ' error: ' + e.message);
+      }
+    }
+  }
+  Logger.log('OCR完了: ' + processed + '件処理');
+}
+
+// ---------- Drive URL → Cloud Vision OCR ----------
+function ocrFromDriveUrl(url) {
+  // Google Driveの画像URLからファイルIDを抽出
+  const fileId = extractDriveFileId(url);
+  if (!fileId) {
+    throw new Error('DriveファイルID取得不可: ' + url);
+  }
+
+  // Drive APIで画像のBase64を取得
+  const file = DriveApp.getFileById(fileId);
+  const blob = file.getBlob();
+  const base64 = Utilities.base64Encode(blob.getBytes());
+
+  // Cloud Vision API 呼び出し
+  const visionUrl = 'https://vision.googleapis.com/v1/images:annotate?key=' + VISION_API_KEY;
+  const payload = {
+    requests: [{
+      image: { content: base64 },
+      features: [{ type: 'TEXT_DETECTION', maxResults: 1 }]
+    }]
+  };
+
+  const response = UrlFetchApp.fetch(visionUrl, {
+    method: 'post',
+    contentType: 'application/json',
+    payload: JSON.stringify(payload),
+    muteHttpExceptions: true
+  });
+
+  const json = JSON.parse(response.getContentText());
+
+  if (json.error) {
+    throw new Error('Vision API: ' + json.error.message);
+  }
+
+  const annotations = json.responses[0].textAnnotations;
+  if (!annotations || annotations.length === 0) {
+    return { text: '', lines: [] };
+  }
+
+  const fullText = annotations[0].description;
+  const lines = fullText.split('\n').map(l => l.trim()).filter(l => l);
+
+  return { text: fullText, lines: lines };
+}
+
+// ---------- Drive URL → ファイルID ----------
+function extractDriveFileId(url) {
+  // パターン1: https://drive.google.com/file/d/XXXXX/view
+  let m = url.match(/\/file\/d\/([^\/]+)/);
+  if (m) return m[1];
+
+  // パターン2: https://drive.google.com/open?id=XXXXX
+  m = url.match(/[?&]id=([^&]+)/);
+  if (m) return m[1];
+
+  // パターン3: https://lh3.googleusercontent.com/d/XXXXX (AppSheet形式)
+  m = url.match(/googleusercontent\.com\/d\/([^?\/]+)/);
+  if (m) return m[1];
+
+  // パターン4: AppSheetがDriveに保存した場合のフルパス
+  // _RowNumber形式のファイル名が入ることがある
+  // その場合はURL自体がファイルIDの可能性
+  if (/^[a-zA-Z0-9_-]{20,}$/.test(url)) return url;
+
+  return null;
+}
+
+// ---------- OCRテキストから型番・シリアル番号を推定 ----------
+function parseOcrText(text) {
+  const result = { model: '', serial: '' };
+  const lines = text.split('\n').map(l => l.trim()).filter(l => l);
+
+  for (const line of lines) {
+    const upper = line.toUpperCase();
+
+    // ----- 型番の検出 -----
+    // "Model:", "型番:", "TYPE:", "製品名:" の後ろ
+    if (!result.model) {
+      let m = line.match(/(?:MODEL|型番|TYPE|PRODUCT|製品名|品名|品番)[:\s：]*(.+)/i);
+      if (m) { result.model = m[1].trim(); continue; }
+    }
+
+    // ThinkPad, Latitude, HP, SHARP 等の既知パターン
+    if (!result.model) {
+      let m = line.match(/(ThinkPad\s+\S+|Latitude\s+\S+|ProBook\s+\S+|EliteBook\s+\S+|MacBook\s+\S+|iPad\s+\S+|MX-\S+|EB-\S+|TM-\S+)/i);
+      if (m) { result.model = m[1].trim(); continue; }
+    }
+
+    // 汎用: 英数字+ハイフンで6文字以上（型番っぽいもの）
+    if (!result.model) {
+      let m = line.match(/\b([A-Z]{1,5}[\-\s]?\d{2,}[A-Z0-9\-]*)\b/);
+      if (m && m[1].length >= 5) { result.model = m[1].trim(); }
+    }
+
+    // ----- シリアル番号の検出 -----
+    if (!result.serial) {
+      let m = line.match(/(?:S\/N|SERIAL|シリアル|S\.N\.|SN)[:\s：#]*([A-Z0-9\-]{5,})/i);
+      if (m) { result.serial = m[1].trim(); continue; }
+    }
+
+    // 長い英数字列（10文字以上）をシリアルっぽいと判定
+    if (!result.serial) {
+      let m = line.match(/\b([A-Z0-9]{10,})\b/);
+      if (m && !result.model.includes(m[1])) {
+        result.serial = m[1].trim();
+      }
+    }
+  }
+
+  return result;
+}
+
+// ---------- テスト用: 手動で1行だけOCR ----------
+function testOcrRow2() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(CONFIG.sheetName);
+  const url = sheet.getRange(2, CONFIG.col.photoUrl).getValue();
+  if (!url) {
+    Logger.log('N2セルに写真URLを入れてから実行してください');
+    return;
+  }
+  const result = ocrFromDriveUrl(url);
+  Logger.log('=== OCR生テキスト ===');
+  Logger.log(result.text);
+  Logger.log('=== パース結果 ===');
+  Logger.log(JSON.stringify(parseOcrText(result.text), null, 2));
+}
+
+// ---------- メニュー追加 ----------
+function onOpen() {
+  SpreadsheetApp.getUi()
+    .createMenu('🦉 備品管理')
+    .addItem('📸 OCR一括実行', 'runOcrAll')
+    .addItem('🧪 テスト (2行目のみ)', 'testOcrRow2')
+    .addToUi();
+}
+
+// ---------- 自動トリガー (オプション) ----------
+// 5分ごとに自動実行したい場合:
+// 1. Apps Script エディタ左メニュー「トリガー」(時計アイコン)
+// 2. 「+ トリガーを追加」
+// 3. 関数: runOcrAll / イベント: 時間主導型 / 5分おき
+// → 写真が追加されるたびに自動OCR</code></pre>
+
+<h2>Step 3: スプレッドシートに補助列を追加</h2>
+
+<div class="card">
+  <p>GASが結果を書き込むために、スプレッドシートに2列追加します。</p>
+
+  <table>
+    <tr><th>列</th><th>ヘッダー名</th><th>用途</th></tr>
+    <tr><td>Y列（25列目）</td><td><code>OCR生テキスト</code></td><td>Cloud Visionが読み取った全文（デバッグ用）</td></tr>
+    <tr><td>Z列（26列目）</td><td><code>OCRステータス</code></td><td>処理状況（✅完了 / ⚠️検出なし / ❌エラー）</td></tr>
+  </table>
+
+  <pre><button class="copy-btn" onclick="copyText(this)">コピー</button><code>OCR生テキスト	OCRステータス</code></pre>
+
+  <p>↑ をY1セルに貼り付けてください。</p>
+
+  <div class="tip">💡 OCR生テキスト列は<strong>デバッグ用</strong>。パース精度を確認し終わったら非表示にしてOK。</div>
+</div>
+
+<h2>Step 4: APIキーの設定と初回テスト</h2>
+
+<div class="card">
+  <ol class="steps">
+    <li>GASエディタで、3行目の <code>YOUR_API_KEY_HERE</code> をStep 1で取得したAPIキーに置き換え</li>
+    <li><strong>保存</strong>（Ctrl+S）</li>
+    <li>テスト用に、スプレッドシートのN2セルに<strong>Google Drive上の画像URL</strong>を入力<br>
+      （iPadで備品シールを撮影してDriveにアップロード → 共有リンクを取得）</li>
+    <li>GASエディタ上部のドロップダウンで <code>testOcrRow2</code> を選択 → ▶️ 実行</li>
+    <li>初回は<strong>権限承認ダイアログ</strong>が出るので「許可」（Driveアクセス + 外部URL呼び出し）</li>
+    <li>実行ログ（Ctrl+Enter）でOCR結果を確認</li>
+  </ol>
+
+  <div class="warn">
+    ⚠️ 初回の権限承認で「このアプリは確認されていません」と出る場合:<br>
+    「詳細」→「（安全でないページに移動）」→「許可」。<br>
+    自分で書いたGASなので問題ありません。
+  </div>
+</div>
+
+<h2>Step 5: 精度テスト（5枚で判断）</h2>
+
+<div class="card">
+  <p><strong>本番投入前に、以下の5パターンで精度を確認してください。</strong></p>
+
+  <table>
+    <tr><th>#</th><th>撮影対象</th><th>確認ポイント</th></tr>
+    <tr><td>1</td><td>PC裏面の型番シール（英数字）</td><td>型番・シリアルが正しく分離されるか</td></tr>
+    <tr><td>2</td><td>複合機の銘板（日本語＋英数字）</td><td>日本語混在時の精度</td></tr>
+    <tr><td>3</td><td>色あせた古いシール</td><td>劣化時の精度限界を把握</td></tr>
+    <tr><td>4</td><td>小さいフォントのシール</td><td>iPadカメラの解像度で読めるか</td></tr>
+    <tr><td>5</td><td>既存の管理シール</td><td>管理番号が正しく読めるか</td></tr>
+  </table>
+
+  <h3>📸 撮影のコツ（精度に直結）</h3>
+  <div class="photo-tips">
+    <div class="photo-tip good">
+      <div class="emoji">✅</div>
+      <div class="label">正面から水平に</div>
+      <div class="desc">シールの面に対して<br>カメラを平行に構える</div>
+    </div>
+    <div class="photo-tip bad">
+      <div class="emoji">❌</div>
+      <div class="label">斜めからの撮影</div>
+      <div class="desc">歪みでOCR精度が<br>大幅に低下</div>
+    </div>
+    <div class="photo-tip good">
+      <div class="emoji">💡</div>
+      <div class="label">明るい場所で</div>
+      <div class="desc">蛍光灯の反射を避けて<br>均一な照明下で</div>
+    </div>
+    <div class="photo-tip bad">
+      <div class="emoji">🌑</div>
+      <div class="label">暗い・影あり</div>
+      <div class="desc">コントラスト不足で<br>文字認識失敗</div>
+    </div>
+  </div>
+
+  <h3>テスト結果の判断基準</h3>
+  <table>
+    <tr><th>結果</th><th>判断</th><th>対応</th></tr>
+    <tr><td>5枚中4枚以上正確</td><td><strong>GO</strong></td><td>本番投入OK。誤認識はOCR生テキストを見て手修正</td></tr>
+    <tr><td>5枚中2〜3枚</td><td><strong>条件付きGO</strong></td><td>撮影ルール（角度・明るさ）を職員に周知して再テスト</td></tr>
+    <tr><td>5枚中1枚以下</td><td><strong>方式Aに切替</strong></td><td>写真撮影＋手入力。シール劣化が原因なら仕方ない</td></tr>
+  </table>
+</div>
+
+<h2>Step 6: 本番運用の設定</h2>
+
+<div class="card">
+  <h3>6-1. スプレッドシートにメニュー追加</h3>
+  <p>GASの <code>onOpen()</code> により、スプレッドシートを開くと自動で<strong>「🦉 備品管理」メニュー</strong>が追加されます。</p>
+  <table>
+    <tr><th>メニュー項目</th><th>動作</th></tr>
+    <tr><td>📸 OCR一括実行</td><td>全行スキャン。写真URLがありOCR未実行の行だけ処理</td></tr>
+    <tr><td>🧪 テスト (2行目のみ)</td><td>デバッグ用。2行目だけ実行</td></tr>
+  </table>
+
+  <h3>6-2. 自動トリガー設定（オプション）</h3>
+  <p>写真が追加されるたびに自動でOCRを走らせたい場合：</p>
+  <ol class="steps">
+    <li>GASエディタ左メニューの<strong>時計アイコン（トリガー）</strong>をクリック</li>
+    <li>右下「<strong>+ トリガーを追加</strong>」</li>
+    <li>関数: <code>runOcrAll</code></li>
+    <li>イベントのソース: <strong>時間主導型</strong></li>
+    <li>時間ベースのトリガータイプ: <strong>分ベースのタイマー</strong></li>
+    <li>間隔: <strong>5分おき</strong>（または15分おき）</li>
+    <li>保存</li>
+  </ol>
+
+  <div class="tip">💡 5分おきなら、写真を撮った後少し待てば自動で型番が転記されます。棚卸し期間中だけトリガーをONにし、終わったらOFFにすると無駄なAPI呼び出しが減ります。</div>
+
+  <h3>6-3. 安全設計のポイント</h3>
+  <table>
+    <tr><th>機能</th><th>説明</th></tr>
+    <tr><td>上書き防止</td><td>型番・シリアル列に<strong>既に値がある場合は上書きしない</strong>。手入力を優先</td></tr>
+    <tr><td>再実行しない</td><td>OCRステータス列に値がある行はスキップ。二重課金なし</td></tr>
+    <tr><td>エラー記録</td><td>失敗時はステータスに ❌ + エラー内容を記録。ログ追跡可能</td></tr>
+    <tr><td>生テキスト保存</td><td>OCR生テキスト列で「何が読めたか」を常に確認できる</td></tr>
+  </table>
+</div>
+
+<h2>パースロジックのカスタマイズ</h2>
+
+<div class="card">
+  <p><code>parseOcrText()</code> 関数が型番・シリアルを推定するロジックです。精度テストの結果に応じて<strong>パターンを追加</strong>できます。</p>
+
+  <h4>例: 大学独自の管理番号パターンを追加</h4>
+  <p>管理番号が <code>J-XXXX</code> 形式なら、以下を <code>parseOcrText()</code> 内に追加：</p>
+
+  <pre><button class="copy-btn" onclick="copyText(this)">コピー</button><code>// 大学管理番号 (J-0001 形式)
+if (!result.assetId) {
+  let m = line.match(/\b(J-\d{4,})\b/i);
+  if (m) { result.assetId = m[1].trim(); }
+}</code></pre>
+
+  <p>取得した <code>result.assetId</code> をシートの管理番号列に転記する処理を <code>runOcrAll()</code> に追加してください。</p>
+
+  <div class="tip">💡 テスト5枚のOCR生テキストを見れば、実際にどんな文字列が読み取られるかが分かります。それを元にパターンを調整するのが最も確実。</div>
+</div>
+
+<h2>コスト・制限</h2>
+
+<div class="card">
+  <table>
+    <tr><th>項目</th><th>内容</th></tr>
+    <tr><td>Cloud Vision API 無料枠</td><td>月1,000リクエスト（TEXT_DETECTION）</td></tr>
+    <tr><td>超過時の料金</td><td>1,000リクエストあたり $1.50（約225円）</td></tr>
+    <tr><td>GAS実行時間制限</td><td>1回あたり6分（Education版）</td></tr>
+    <tr><td>1回で処理可能な件数</td><td>約50〜100件（画像サイズによる）</td></tr>
+    <tr><td>それ以上の場合</td><td>トリガーで分割実行（5分おき×複数回）</td></tr>
+  </table>
+</div>
+
+<footer>
+  OCR型番自動読み取りガイド / ipc-arch / 2026<br>
+  <a href="setup-it.html" style="color:var(--main);">← IT部門拡張ガイドに戻る</a>
+</footer>
+
+</div>
+
+<script>
+function copyText(btn) {
+  const code = btn.nextElementSibling.textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = "✓ コピー済";
+    btn.classList.add("copied");
+    setTimeout(() => { btn.textContent = "コピー"; btn.classList.remove("copied"); }, 2000);
+  });
+}
+</script>
+</body>
+</html>
