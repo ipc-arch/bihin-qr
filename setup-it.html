@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>備品管理アプリ IT部門拡張 セットアップガイド</title>
+<link rel="icon" type="image/png" href="owl-icon-512.png">
+<style>
+  :root {
+    --main: #2b6cb0;
+    --accent: #ed8936;
+    --bg: #f7fafc;
+    --card: #ffffff;
+    --text: #2d3748;
+    --muted: #718096;
+    --border: #e2e8f0;
+    --ok: #48bb78;
+    --code-bg: #2d3748;
+    --code-text: #f7fafc;
+    --it: #805ad5;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "Hiragino Sans", "Yu Gothic", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    margin: 0;
+    padding: 20px;
+  }
+  .wrap { max-width: 920px; margin: 0 auto; }
+
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: linear-gradient(135deg, #f3e8ff 0%, #ffffff 100%);
+    padding: 24px;
+    border-radius: 16px;
+    border: 2px solid #d6bcfa;
+    margin-bottom: 24px;
+  }
+  .header img { width: 90px; height: 90px; flex-shrink: 0; }
+  .header h1 { margin: 0 0 6px 0; color: var(--it); font-size: 1.5em; }
+  .header p { margin: 0; color: var(--muted); font-size: 0.9em; }
+
+  h2 {
+    color: var(--it);
+    background: #f3e8ff;
+    padding: 14px 18px;
+    border-left: 6px solid var(--it);
+    margin-top: 50px;
+    font-size: 1.2em;
+  }
+  h3 { color: var(--accent); margin-top: 28px; font-size: 1.05em; }
+  h4 { color: var(--text); margin-top: 20px; font-size: 1em; }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 16px 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    background: white;
+    font-size: 0.88em;
+  }
+  th, td { border: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+  th { background: #edf2f7; white-space: nowrap; }
+  td code { background: #edf2f7; padding: 1px 6px; border-radius: 3px; font-size: 0.9em; }
+  .col-base { }
+  .col-it { background: #faf5ff; }
+  .col-loan { background: #fffff0; }
+
+  pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 16px;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-size: 0.85em;
+    line-height: 1.6;
+    position: relative;
+  }
+  .copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #4a5568;
+    color: white;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.75em;
+    cursor: pointer;
+  }
+  .copy-btn:hover { background: #718096; }
+  .copy-btn.copied { background: var(--ok); }
+
+  ol.steps { counter-reset: step; padding-left: 0; list-style: none; }
+  ol.steps > li {
+    counter-increment: step;
+    padding: 12px 16px 12px 56px;
+    position: relative;
+    background: white;
+    border-left: 4px solid var(--it);
+    margin: 10px 0;
+    border-radius: 0 8px 8px 0;
+  }
+  ol.steps > li::before {
+    content: counter(step);
+    position: absolute;
+    left: 12px; top: 12px;
+    background: var(--it);
+    color: white;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; font-size: 0.9em;
+  }
+
+  .note {
+    background: #fffbeb;
+    border: 1px solid #f6e05e;
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-size: 0.92em;
+    margin: 12px 0;
+  }
+  .tip {
+    background: #f0fff4;
+    border-left: 4px solid var(--ok);
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin: 12px 0;
+    font-size: 0.95em;
+  }
+  .warn {
+    background: #fff5f5;
+    border-left: 4px solid #fc8181;
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin: 12px 0;
+    font-size: 0.95em;
+  }
+
+  .legend {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin: 12px 0;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.88em;
+  }
+  .legend-color {
+    width: 16px; height: 16px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+  }
+
+  .flow-diagram {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 16px 0;
+    text-align: center;
+  }
+  .flow-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 12px 0;
+  }
+  .flow-box {
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 0.85em;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .flow-box.action { background: var(--it); color: white; }
+  .flow-box.data { background: #ebf4ff; color: var(--main); border: 2px solid var(--main); }
+  .flow-box.result { background: #f0fff4; color: #276749; border: 2px solid var(--ok); }
+  .flow-arrow { font-size: 1.2em; color: var(--muted); }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: var(--main);
+    text-decoration: none;
+    font-size: 0.95em;
+  }
+  .back-link:hover { text-decoration: underline; }
+
+  footer {
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.9em;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<a href="setup.html" class="back-link">← 基本セットアップ手順書に戻る</a>
+
+<div class="header">
+  <img src="owl-icon-512.png" alt="">
+  <div>
+    <h1>🖥️ IT部門拡張ガイド</h1>
+    <p>PC・リース機器・消耗品・貸出管理・OCR型番読み取りに対応</p>
+  </div>
+</div>
+
+<div class="card">
+  <strong>前提:</strong> <a href="setup.html">基本セットアップ（Step 1〜3）</a>が完了している状態から始めます。<br>
+  このガイドでは、IT部門特有の列を追加し、貸出管理とOCR読み取りを設定します。
+</div>
+
+<h2>1. 拡張ヘッダー行（コピペ用）</h2>
+
+<div class="card">
+  <p>既存のシートを削除して作り直すか、新規シートとして作成してください。<br>
+  A1セルに以下を貼り付けると<strong>24列</strong>に展開されます。</p>
+
+  <pre><button class="copy-btn" onclick="copyText(this)">コピー</button><code>ID	管理番号	品名	型番	メーカー	資産区分	設置場所	管理課	購入日	購入金額	リース期限	リース会社	写真	型番写真	OSバージョン	シリアル番号	MACアドレス	貸出先部署	貸出先個人	貸出日	状態	最終棚卸日	棚卸者	備考</code></pre>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-color" style="background:white;"></div> 基本列（全備品共通）</div>
+    <div class="legend-item"><div class="legend-color" style="background:#faf5ff;"></div> IT固有列</div>
+    <div class="legend-item"><div class="legend-color" style="background:#fffff0;"></div> 貸出管理列</div>
+  </div>
+
+  <h3>列の一覧と設定</h3>
+
+  <table>
+    <tr><th>#</th><th>列名</th><th>AppSheet Type</th><th>設定内容</th><th>補足</th></tr>
+    <tr class="col-base"><td>A</td><td>ID</td><td>Text</td><td><strong>Key</strong>にチェック</td><td>主キー</td></tr>
+    <tr class="col-base"><td>B</td><td>管理番号</td><td>Text</td><td>Scannable? ON</td><td>QR読取用</td></tr>
+    <tr class="col-base"><td>C</td><td>品名</td><td>Text</td><td><strong>Label</strong>にチェック</td><td>一覧の表示名</td></tr>
+    <tr class="col-it"><td>D</td><td>型番</td><td>Text</td><td>—</td><td>手入力 or OCR</td></tr>
+    <tr class="col-it"><td>E</td><td>メーカー</td><td>Enum</td><td>Lenovo, HP, Dell, SHARP, EPSON, Apple, その他</td><td>プルダウン</td></tr>
+    <tr class="col-it"><td>F</td><td>資産区分</td><td>Enum</td><td><code>購入備品</code>, <code>リース</code>, <code>消耗品</code></td><td>★3分類の肝</td></tr>
+    <tr class="col-base"><td>G</td><td>設置場所</td><td>Text</td><td>—</td><td></td></tr>
+    <tr class="col-base"><td>H</td><td>管理課</td><td>Enum</td><td>管財課, 総務課, 教務課, システム課…</td><td></td></tr>
+    <tr class="col-base"><td>I</td><td>購入日</td><td>Date</td><td>—</td><td></td></tr>
+    <tr class="col-base"><td>J</td><td>購入金額</td><td>Price</td><td>Currency: JPY</td><td></td></tr>
+    <tr class="col-it"><td>K</td><td>リース期限</td><td>Date</td><td>—</td><td>資産区分=リースの時のみ</td></tr>
+    <tr class="col-it"><td>L</td><td>リース会社</td><td>Text</td><td>—</td><td>大塚商会, リコー 等</td></tr>
+    <tr class="col-base"><td>M</td><td>写真</td><td>Image</td><td>—</td><td>本体外観</td></tr>
+    <tr class="col-it"><td>N</td><td>型番写真</td><td>Image</td><td>—</td><td>★OCR読取元の写真</td></tr>
+    <tr class="col-it"><td>O</td><td>OSバージョン</td><td>Enum</td><td>Windows 11, Windows 10, macOS, ChromeOS, iOS/iPadOS, Linux, N/A</td><td></td></tr>
+    <tr class="col-it"><td>P</td><td>シリアル番号</td><td>Text</td><td>—</td><td>手入力 or OCR</td></tr>
+    <tr class="col-it"><td>Q</td><td>MACアドレス</td><td>Text</td><td>—</td><td>ネットワーク管理用（任意）</td></tr>
+    <tr class="col-loan"><td>R</td><td>貸出先部署</td><td>Enum</td><td>管財課, 総務課, 教務課, 学生課, 図書館…</td><td></td></tr>
+    <tr class="col-loan"><td>S</td><td>貸出先個人</td><td>Text</td><td>—</td><td>氏名（機密配慮→後述）</td></tr>
+    <tr class="col-loan"><td>T</td><td>貸出日</td><td>Date</td><td>—</td><td></td></tr>
+    <tr class="col-base"><td>U</td><td>状態</td><td>Enum</td><td><code>使用中</code>, <code>遊休</code>, <code>貸出中</code>, <code>修理中</code>, <code>廃棄予定</code></td><td>★「貸出中」追加</td></tr>
+    <tr class="col-base"><td>V</td><td>最終棚卸日</td><td>DateTime</td><td>—</td><td>自動記録</td></tr>
+    <tr class="col-base"><td>W</td><td>棚卸者</td><td>Email</td><td>—</td><td>自動記録</td></tr>
+    <tr class="col-base"><td>X</td><td>備考</td><td>LongText</td><td>—</td><td></td></tr>
+  </table>
+</div>
+
+<h2>2. サンプルデータ（IT部門用）</h2>
+
+<div class="card">
+  <p>A2セルに以下を貼り付けてください（5件分）。</p>
+
+  <pre><button class="copy-btn" onclick="copyText(this)">コピー</button><code>IT-0001	IT-0001	ノートPC	ThinkPad X1 Carbon Gen11	Lenovo	購入備品	システム課	システム課	2023-04-01	220000				Windows 11			総務課	山田太郎	2023-04-15	貸出中			
+IT-0002	IT-0002	ノートPC	ThinkPad X1 Carbon Gen10	Lenovo	購入備品	システム課	システム課	2022-04-01	198000				Windows 11					遊休			旧職員使用・返却済
+IT-0003	IT-0003	複合機	MX-3650FN	SHARP	リース	事務室	管財課	2021-04-01	0	2026-03-31	大塚商会									使用中			リース満了間近
+IT-0004	IT-0004	トナーカートリッジ	MX-36JT	SHARP	消耗品	倉庫	管財課	2025-01-15	8500									使用中			MX-3650FN用・予備
+IT-0005	IT-0005	iPad	iPad 第10世代	Apple	購入備品	システム課	システム課	2023-09-01	68800				iPadOS			教務課	佐藤花子	2024-04-01	貸出中			授業用貸出</code></pre>
+
+  <div class="tip">💡 このサンプルで<strong>全3区分</strong>（購入備品/リース/消耗品）と<strong>貸出中/遊休/使用中</strong>の状態を網羅しています。設定後の動作確認に使えます。</div>
+</div>
+
+<h2>3. 資産区分による表示分け</h2>
+
+<div class="card">
+  <h3>3-1. 条件付き列表示（Show_If）</h3>
+  <p>リース関連列は資産区分が「リース」の時だけ表示すると、入力画面がスッキリします。</p>
+
+  <p>AppSheet → <strong>Data</strong> → <strong>Columns</strong> で以下の列の <strong>Show_If</strong> 欄に式を入力。</p>
+
+  <table>
+    <tr><th>列名</th><th>Show_If 式</th></tr>
+    <tr><td>リース期限</td><td><code>[資産区分] = "リース"</code></td></tr>
+    <tr><td>リース会社</td><td><code>[資産区分] = "リース"</code></td></tr>
+    <tr><td>OSバージョン</td><td><code>NOT([資産区分] = "消耗品")</code></td></tr>
+    <tr><td>シリアル番号</td><td><code>NOT([資産区分] = "消耗品")</code></td></tr>
+    <tr><td>MACアドレス</td><td><code>NOT([資産区分] = "消耗品")</code></td></tr>
+  </table>
+
+  <div class="tip">💡 消耗品（トナー等）の入力時にOS欄やシリアル欄が消えるので、入力者が迷わない。</div>
+
+  <h3>3-2. 区分別ビュー</h3>
+  <p><strong>UX</strong> → <strong>Views</strong> で区分別の一覧を追加。</p>
+
+  <table>
+    <tr><th>ビュー名</th><th>Row filter condition</th><th>Icon</th></tr>
+    <tr><td>PC一覧</td><td><code>AND([資産区分] = "購入備品", OR([OSバージョン] = "Windows 11", [OSバージョン] = "Windows 10", [OSバージョン] = "macOS", [OSバージョン] = "ChromeOS"))</code></td><td>💻</td></tr>
+    <tr><td>リース機器</td><td><code>[資産区分] = "リース"</code></td><td>📋</td></tr>
+    <tr><td>消耗品</td><td><code>[資産区分] = "消耗品"</code></td><td>📦</td></tr>
+    <tr><td>貸出中</td><td><code>[状態] = "貸出中"</code></td><td>🔄</td></tr>
+    <tr><td>遊休備品</td><td><code>[状態] = "遊休"</code></td><td>🎁</td></tr>
+  </table>
+</div>
+
+<h2>4. 貸出管理アクション</h2>
+
+<div class="card">
+  <h3>4-1. 「貸し出す」アクション</h3>
+  <p><strong>Behavior</strong> → <strong>Actions</strong> → <strong>+ New Action</strong></p>
+
+  <table>
+    <tr><th>項目</th><th>設定値</th></tr>
+    <tr><td>Action name</td><td><code>📤 貸し出す</code></td></tr>
+    <tr><td>For a record of</td><td>Items</td></tr>
+    <tr><td>Do this</td><td>Data: set the values of some columns in this row</td></tr>
+  </table>
+
+  <p>Set these columns:</p>
+  <table>
+    <tr><th>Column</th><th>Value</th></tr>
+    <tr><td>状態</td><td><code>"貸出中"</code></td></tr>
+    <tr><td>貸出日</td><td><code>TODAY()</code></td></tr>
+  </table>
+
+  <p>Only if this condition is true（表示条件）:</p>
+  <pre><button class="copy-btn" onclick="copyText(this)">コピー</button><code>AND([状態] <> "貸出中", [状態] <> "廃棄予定", [資産区分] <> "消耗品")</code></pre>
+
+  <div class="note">⚠️ 貸出先部署と貸出先個人は<strong>自動入力しない</strong>（誰に貸すか分からないため）。アクション実行後、手動で入力してもらう運用。もし入力を強制したい場合は、<strong>Needs confirmation</strong> → テキスト入力付き確認ダイアログにする。</div>
+
+  <h3>4-2. 「返却する」アクション</h3>
+
+  <table>
+    <tr><th>項目</th><th>設定値</th></tr>
+    <tr><td>Action name</td><td><code>📥 返却する</code></td></tr>
+    <tr><td>Do this</td><td>Data: set the values of some columns in this row</td></tr>
+  </table>
+
+  <p>Set these columns:</p>
+  <table>
+    <tr><th>Column</th><th>Value</th></tr>
+    <tr><td>状態</td><td><code>"遊休"</code></td></tr>
+    <tr><td>貸出先部署</td><td><code>""</code>（空文字で消去）</td></tr>
+    <tr><td>貸出先個人</td><td><code>""</code></td></tr>
+    <tr><td>貸出日</td><td><code>""</code></td></tr>
+  </table>
+
+  <p>Only if this condition is true:</p>
+  <pre><button class="copy-btn" onclick="copyText(this)">コピー</button><code>[状態] = "貸出中"</code></pre>
+
+  <div class="tip">💡 「貸し出す」ボタンは未貸出時のみ表示、「返却する」は貸出中のみ表示。状態によってボタンが自動で切り替わります。</div>
+
+  <h3>4-3. 貸出フロー図</h3>
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box data">遊休 / 使用中</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box action">📤 貸し出す</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box result">貸出中（部署・個人入力）</div>
+    </div>
+    <div class="flow-row">
+      <div class="flow-box data">貸出中</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box action">📥 返却する</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box result">遊休（貸出情報クリア）</div>
+    </div>
+  </div>
+</div>
+
+<h2>5. OCR型番読み取り</h2>
+
+<div class="card">
+  <h3>仕組み</h3>
+  <p>AppSheetの <strong>Image型</strong> 列 + <strong>App Formula</strong> を使って、撮影した型番シールからテキストを抽出します。</p>
+
+  <div class="note">⚠️ <strong>AppSheetのOCR機能は限定的です。</strong>現状、完全自動のテキスト抽出はAppSheet単体では難しい。以下の2段階アプローチが現実的：</div>
+
+  <h3>方式A（推奨）: 写真撮影 + 手入力の半自動化</h3>
+  <p>実運用では<strong>これが一番確実で速い</strong>です。</p>
+
+  <ol class="steps">
+    <li><strong>「型番写真」列</strong>（Image型）をタップ → iPadカメラが起動</li>
+    <li>備品裏面の型番シールを撮影 → 自動でDrive保存</li>
+    <li>撮影した写真を見ながら<strong>「型番」「シリアル番号」列に手入力</strong></li>
+  </ol>
+
+  <div class="tip">💡 型番写真が残るので、後から「あれ、型番なんだっけ?」が無い。写真がそのままエビデンスになる。</div>
+
+  <h3>方式B（発展）: Google Apps Script + Cloud Vision OCR</h3>
+  <p>完全自動化したい場合の将来オプション。実装コストがあるので、まずは方式Aで十分。</p>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box action">iPadで撮影</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box data">Drive保存</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box action">GAS が Cloud Vision API 呼出</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box result">型番列に自動転記</div>
+    </div>
+  </div>
+
+  <table>
+    <tr><th>方式</th><th>精度</th><th>コスト</th><th>導入の手間</th></tr>
+    <tr><td>A: 写真＋手入力</td><td>100%（人間）</td><td>無料</td><td>なし</td></tr>
+    <tr><td>B: Cloud Vision OCR</td><td>85〜95%</td><td>月1000回まで無料</td><td>GAS開発1〜2時間</td></tr>
+  </table>
+
+  <div class="warn">⚠️ 方式B（Cloud Vision）は Google Cloud Platform の有効化と API キー発行が必要です。大学の情シス部門のGCP利用ポリシーに要確認。</div>
+</div>
+
+<h2>6. リース期限アラート</h2>
+
+<div class="card">
+  <h3>6-1. Format Rules で色分け</h3>
+  <p><strong>UX</strong> → <strong>Format Rules</strong> → <strong>+ New Format Rule</strong></p>
+
+  <table>
+    <tr><th>ルール名</th><th>条件式</th><th>色</th></tr>
+    <tr><td>リース期限3ヶ月以内</td><td><code>AND([資産区分]="リース", [リース期限] <= TODAY()+90, [リース期限] >= TODAY())</code></td><td>黄色（警告）</td></tr>
+    <tr><td>リース期限切れ</td><td><code>AND([資産区分]="リース", [リース期限] < TODAY())</code></td><td>赤（危険）</td></tr>
+  </table>
+
+  <div class="tip">💡 IT-0003（SHARP複合機、2026-03-31期限）が黄色で表示されたら、フォーマットルールが正常に動作しています。</div>
+
+  <h3>6-2. リース期限切れ通知（オプション・GAS）</h3>
+  <p>将来、Google Apps Script で毎月自動メール通知を飛ばすことも可能。まずは色分けだけで運用。</p>
+</div>
+
+<h2>7. 個人情報の取り扱い</h2>
+
+<div class="card">
+  <div class="warn">
+    ⚠️ 「貸出先個人」列には<strong>職員の氏名</strong>が入ります。アプリの閲覧権限設定に注意。
+  </div>
+
+  <h3>推奨設定</h3>
+  <table>
+    <tr><th>閲覧者</th><th>見える範囲</th><th>設定方法</th></tr>
+    <tr><td>システム課（Admin）</td><td>全列・全行</td><td>Role = Admin</td></tr>
+    <tr><td>管財課</td><td>全列・全行</td><td>Role = Admin</td></tr>
+    <tr><td>他課の職員（User）</td><td>貸出先個人は<strong>非表示</strong></td><td>列のShow_If: <code>IN(USEREMAIL(), Admins[Email])</code></td></tr>
+  </table>
+
+  <p>他課から見えるのは「貸出先<strong>部署</strong>」まで。個人名はシステム課・管財課のみ閲覧可。</p>
+</div>
+
+<h2>8. 動作確認チェックリスト（IT拡張版）</h2>
+
+<div class="card">
+  <ul>
+    <li>✅ サンプル5件が一覧に表示される</li>
+    <li>✅ IT-0001をタップすると貸出先（総務課・山田太郎）が見える</li>
+    <li>✅ IT-0002（遊休）が「遊休備品」ビューに表示される</li>
+    <li>✅ IT-0003（リース）にリース期限・リース会社が表示される</li>
+    <li>✅ IT-0004（消耗品）にOS欄・シリアル欄が表示されない</li>
+    <li>✅ IT-0003のリスト表示に黄色ハイライトが付く（期限3ヶ月以内）</li>
+    <li>✅ 「📤 貸し出す」はIT-0002（遊休）にのみ表示される</li>
+    <li>✅ 「📥 返却する」はIT-0001（貸出中）にのみ表示される</li>
+    <li>✅ 返却アクション実行後、貸出先がクリアされる</li>
+    <li>✅ 「PC一覧」ビューにPC系のみ表示（消耗品・複合機は出ない）</li>
+    <li>✅ 型番写真を撮影してDriveに保存される</li>
+  </ul>
+</div>
+
+<h2>📝 全課展開時の注意</h2>
+
+<div class="card">
+  <p>IT部門パイロットで確認が取れたら、全課展開時にはこの拡張列のうち<strong>不要な列を非表示</strong>にすれば基本版として使えます。</p>
+
+  <table>
+    <tr><th>全課展開時</th><th>対応</th></tr>
+    <tr><td>型番写真、OSバージョン、シリアル番号、MACアドレス</td><td>Show_If: <code>[管理課]="システム課"</code> にしてIT部門のみ表示</td></tr>
+    <tr><td>資産区分、貸出管理</td><td>全課で使えるのでそのまま</td></tr>
+    <tr><td>リース期限・リース会社</td><td>すでに条件付き表示なのでそのまま</td></tr>
+  </table>
+</div>
+
+<footer>
+  備品管理アプリ IT部門拡張ガイド / ipc-arch / 2026
+</footer>
+
+</div>
+
+<script>
+function copyText(btn) {
+  const code = btn.nextElementSibling.textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = "✓ コピー済";
+    btn.classList.add("copied");
+    setTimeout(() => { btn.textContent = "コピー"; btn.classList.remove("copied"); }, 2000);
+  });
+}
+</script>
+</body>
+</html>
